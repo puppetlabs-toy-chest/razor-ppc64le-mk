@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# possibly ensure that facter and mk-client gems are installed before running loop below
+
+while true; do
+/usr/local/bin/mk-update register && sleep 15;
+done

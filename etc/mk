@@ -1,0 +1,30 @@
+#!/sbin/openrc-run
+
+name=$RC_SVCNAME
+description="Interact with Razor server"
+
+depend() {
+  need net
+  use dns logger
+}
+
+start_pre() {
+  sleep 30
+}
+
+start() {
+   ebegin "Starting mk"
+   start-stop-daemon \
+   --background --start \
+   --exec /usr/local/bin/mk-update \
+   --make-pidfile --pidfile /var/run/mk.pid
+   eend $?
+}
+
+stop() {
+   ebegin "Stoping mk"
+   start-stop-daemon --stop \
+   --exec /usr/local/bin/mk-update \
+   --pidfile /var/run/mk.pid
+   eend $?
+}
