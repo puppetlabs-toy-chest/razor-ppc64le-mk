@@ -46,8 +46,6 @@ cp ./bin/mk-register /etc/apker
 cp ./bin/mk-update /etc/apker
 cp ./bin/mk /etc/apker/mk.rb
 
-cd ../
-
 git clone https://github.com/alpinelinux/aports.git
 cp genapkovl-razor.sh ./aports/scripts
 cp mkimg.razor.sh ./aports/scripts
