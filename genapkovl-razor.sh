@@ -58,22 +58,24 @@ ruby-bundler
 net-tools
 EOF
 
+#/etc/razor-build exists on build machine
 BUILD_DIR=/etc/razor-build
 
-#/etc/razor-build exists on build machine
 #/etc/gems and /etc/razor will be on machine we want to get info for
 mkdir -p "$tmp"/etc/gems
 cp $BUILD_DIR/my-gems/*.gem "$tmp"/etc/gems
 
-#/etc/razor contains scripts to start service
+#/etc/razor contains scripts utilized by our service
 mkdir -p "$tmp"/etc/razor
 cp $BUILD_DIR/mk* "$tmp"/etc/razor
 
+# below writes the OpenRC service script. responsible for executing 
+  # other sh scripts and ruby scripts to send data back to razor server
 mkdir -p "$tmp"/etc/init.d/
 makefile root:root 0755 "$tmp"/etc/init.d/mk <<EOF
 #!/sbin/openrc-run
 
-name="razormk"
+name="rmk"
 description="Interact with Razor server"
 
 depend() {
@@ -124,6 +126,7 @@ rc_add bootmisc boot
 rc_add syslog boot
 rc_add networking boot
 
+# add out new service to default runlevel
 rc_add mk default
 
 rc_add mount-ro shutdown
