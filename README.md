@@ -1,4 +1,4 @@
-# alpine-vanilla-ppc64le
+# Razor Microkernel for ppc64le
 Build Alpine Linux iso for ppc64le in order to setup a Razor mircokernel.
 
 More info: https://github.com/puppetlabs/razor-el-mk/blob/master/README.md
