@@ -10,6 +10,7 @@ cleanup() {
 	rm -rf "$tmp"
 }
 
+# make a file with permissions and owners
 makefile() {
 	OWNER="$1"
 	PERMS="$2"
@@ -19,19 +20,23 @@ makefile() {
 	chmod "$PERMS" "$FILENAME"
 }
 
+# add a service to the run level and setup system links
 rc_add() {
 	mkdir -p "$tmp"/etc/runlevels/"$2"
 	ln -sf /etc/init.d/"$1" "$tmp"/etc/runlevels/"$2"/"$1"
 }
 
+# if that dir aint made, exit
 tmp="$(mktemp -d)"
 trap cleanup EXIT
 
+# hostname is set at boot so initialize hostname here
 mkdir -p "$tmp"/etc
 makefile root:root 0644 "$tmp"/etc/hostname <<EOF
 $HOSTNAME
 EOF
 
+#setup interface files since networking is in boot runlevel(started at boot)
 mkdir -p "$tmp"/etc/network
 makefile root:root 0644 "$tmp"/etc/network/interfaces <<EOF
 auto lo
@@ -41,6 +46,7 @@ auto eth0
 iface eth0 inet dhcp
 EOF
 
+# packages we will pull off of the loop mounted iso
 mkdir -p "$tmp"/etc/apk
 makefile root:root 0644 "$tmp"/etc/apk/world <<EOF
 alpine-base
@@ -75,7 +81,7 @@ mkdir -p "$tmp"/etc/init.d/
 makefile root:root 0755 "$tmp"/etc/init.d/mk <<EOF
 #!/sbin/openrc-run
 
-name="rmk"
+name="mk"
 description="Interact with Razor server"
 
 depend() {
