@@ -58,14 +58,16 @@ ruby-bundler
 net-tools
 EOF
 
+BUILD_DIR=/etc/razor-build
+
 #/etc/razor-build exists on build machine
 #/etc/gems and /etc/razor will be on machine we want to get info for
 mkdir -p "$tmp"/etc/gems
-cp /etc/razor-build/my-gems/*.gem "$tmp"/etc/gems
+cp $BUILD_DIR/my-gems/*.gem "$tmp"/etc/gems
 
 #/etc/razor contains scripts to start service
 mkdir -p "$tmp"/etc/razor
-cp /etc/razor-build/mk* "$tmp"/etc/razor
+cp $BUILD_DIR/mk* "$tmp"/etc/razor
 
 mkdir -p "$tmp"/etc/init.d/
 makefile root:root 0755 "$tmp"/etc/init.d/mk <<EOF
