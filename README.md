@@ -35,3 +35,5 @@ Read the output from build command and look for build dir in /tmp
 More info:
 
 https://wiki.alpinelinux.org/wiki/How_to_make_a_custom_ISO_image_with_mkimage
+
+Generating the PXE bootable image: https://wiki.alpinelinux.org/wiki/Talk:PXE_boot
