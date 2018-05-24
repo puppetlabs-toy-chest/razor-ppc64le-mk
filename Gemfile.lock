@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.4)
-    facter (1.7.2)
+    facter (2.5.1)
     fakefs (0.4.3)
     fuubar (1.1.1)
       rspec (~> 2.0)
@@ -30,7 +30,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  facter
+  facter (>= 1.7.6)
   fakefs (~> 0.4.3)
   fuubar
   rake
@@ -40,3 +40,9 @@ DEPENDENCIES
   rspec-mocks (~> 2.13.0)
   simplecov
   thor
+
+RUBY VERSION
+   ruby 2.4.4p296
+
+BUNDLED WITH
+   1.16.2

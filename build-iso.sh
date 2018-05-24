@@ -29,22 +29,21 @@ apk update
 bundle install
 bundle exec rake build
 
-#TODO rename to razr-build
-#all files included in apkovl will be in /etc/apker on build machine
-mkdir -p /etc/apker/my-gems
-mkdir -p /etc/apker/my-gems/facter
+#all files included in apkovl will be in /etc/razor-build on build machine
+mkdir -p /etc/razor-build/my-gems
+mkdir -p /etc/razor-build/my-gems/facter
 
-gem install facter --no-document -i /etc/apker/my-gems/facter
+gem install facter --no-document -i /etc/razor-build/my-gems/facter
 
-#all gems for .iso in /etc/apker/my-gems
-cp /etc/apker/my-gems/facter/cache/*.gem /etc/apker/my-gems
-rm -rf /etc/apker/my-gems/facter
+#all gems for .iso in /etc/razor-build/my-gems
+cp /etc/razor-build/my-gems/facter/cache/*.gem /etc/razor-build/my-gems
+rm -rf /etc/razor-build/my-gems/facter
 
-cp ./pkg/*.gem /etc/apker/my-gems
-cp ./etc/mk /etc/apker #created from genapkovl, this is just a backup
-cp ./bin/mk-register /etc/apker
-cp ./bin/mk-update /etc/apker
-cp ./bin/mk /etc/apker/mk.rb
+cp ./pkg/*.gem /etc/razor-build/my-gems
+cp ./etc/mk /etc/razor-build #created from genapkovl, this is just a backup
+cp ./bin/mk-register /etc/razor-build
+cp ./bin/mk-update /etc/razor-build
+cp ./bin/mk /etc/razor-build/mk.rb
 
 git clone https://github.com/alpinelinux/aports.git
 cp genapkovl-razor.sh ./aports/scripts
