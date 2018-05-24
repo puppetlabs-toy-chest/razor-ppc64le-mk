@@ -3,6 +3,9 @@
 #setup the env to build a ppc64le vanilla iso for razor
 # https://wiki.alpinelinux.org/wiki/How_to_make_a_custom_ISO_image_with_mkimage
 
+# where scripts and gems will exist so genapkovl can grab them
+BUILD_DIR=/etc/razor-build
+
 #clear it
 echo >  /etc/apk/repositories
 
@@ -32,24 +35,23 @@ cp /root/.abuild/root-*.rsa.pub /etc/apk/keys.pub
 bundle install
 bundle exec rake build
 
-# all files included in apkovl will be in /etc/razor-build on build machine
-mkdir -p /etc/razor-build/my-gems
-mkdir -p /etc/razor-build/my-gems/facter
+mkdir -p $BUILD_DIR/my-gems
+mkdir -p $BUILD_DIR/my-gems/facter
 
 # local install these gems so genapkovl can grab them
-gem install facter --no-document -i /etc/razor-build/my-gems/facter
+gem install facter --no-document -i $BUILD_DIR/my-gems/facter
 
 # move all gems for .iso in /etc/razor-build/my-gems
-cp /etc/razor-build/my-gems/facter/cache/*.gem /etc/razor-build/my-gems
-rm -rf /etc/razor-build/my-gems/facter
+cp $BUILD_DIR/my-gems/facter/cache/*.gem $BUILD_DIR/my-gems
+rm -rf $BUILD_DIR/my-gems/facter
 
 # location of razor-mk-agent-008.gem
-cp ./pkg/*.gem /etc/razor-build/my-gems
+cp ./pkg/*.gem $BUILD_DIR/my-gems
 
 # move shell scripts used by mk OpenRC service 
-cp ./bin/mk-register /etc/razor-build
-cp ./bin/mk-update /etc/razor-build
-cp ./bin/mk /etc/razor-build/mk.rb # eventully this will be renamed to just mk
+cp ./bin/mk-register $BUILD_DIR
+cp ./bin/mk-update $BUILD_DIR
+cp ./bin/mk $BUILD_DIR/mk.rb # eventully this will be renamed to just mk
 
 # repo with build scripts
 git clone https://github.com/alpinelinux/aports.git
