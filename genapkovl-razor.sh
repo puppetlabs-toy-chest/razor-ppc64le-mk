@@ -10,7 +10,6 @@ cleanup() {
 	rm -rf "$tmp"
 }
 
-# make a file with permissions and owners
 makefile() {
 	OWNER="$1"
 	PERMS="$2"
@@ -20,23 +19,19 @@ makefile() {
 	chmod "$PERMS" "$FILENAME"
 }
 
-# add a service to the run level and setup system links
 rc_add() {
 	mkdir -p "$tmp"/etc/runlevels/"$2"
 	ln -sf /etc/init.d/"$1" "$tmp"/etc/runlevels/"$2"/"$1"
 }
 
-# if that dir aint made, exit
 tmp="$(mktemp -d)"
 trap cleanup EXIT
 
-# hostname is set at boot so initialize hostname here
 mkdir -p "$tmp"/etc
 makefile root:root 0644 "$tmp"/etc/hostname <<EOF
 $HOSTNAME
 EOF
 
-#setup interface files since networking is in boot runlevel(started at boot)
 mkdir -p "$tmp"/etc/network
 makefile root:root 0644 "$tmp"/etc/network/interfaces <<EOF
 auto lo
@@ -46,7 +41,6 @@ auto eth0
 iface eth0 inet dhcp
 EOF
 
-# packages we will pull off of the loop mounted iso
 mkdir -p "$tmp"/etc/apk
 makefile root:root 0644 "$tmp"/etc/apk/world <<EOF
 alpine-base
@@ -64,19 +58,17 @@ ruby-bundler
 net-tools
 EOF
 
-#/etc/razor-build exists on build machine
 BUILD_DIR=/etc/razor-build
 
+#/etc/razor-build exists on build machine
 #/etc/gems and /etc/razor will be on machine we want to get info for
-mkdir -p "$tmp"/etc/gems
-cp $BUILD_DIR/my-gems/*.gem "$tmp"/etc/gems
+#mkdir -p "$tmp"/etc/gems
+#cp $BUILD_DIR/my-gems/*.gem "$tmp"/etc/gems
 
-#/etc/razor contains scripts utilized by our service
+#/etc/razor contains scripts to start service
 mkdir -p "$tmp"/etc/razor
 cp $BUILD_DIR/mk* "$tmp"/etc/razor
 
-# below writes the OpenRC service script. responsible for executing 
-  # other sh scripts and ruby scripts to send data back to razor server
 mkdir -p "$tmp"/etc/init.d/
 makefile root:root 0755 "$tmp"/etc/init.d/mk <<EOF
 #!/sbin/openrc-run
@@ -91,9 +83,10 @@ depend() {
 
 start_pre() {
     sleep 30
-    if [ ! -f /usr/local/bin/mk ]; then
-	mkdir -p /usr/local/bin
-	/usr/bin/gem install --local /etc/gems/*.gem --no-document -n /usr/local/bin
+    if [ ! -f /usr/bin/facter ]; then
+	apk add /media/cdrom/apks/ppc64le/facter*.apk --force-non-repository --allow-untrusted
+	apk add /media/cdrom/apks/ppc64le/razor-mk-agent*.apk --force-non-repository --allow-untrusted
+   	mkdir -p /usr/local/bin 
 	mv /etc/razor/mk-* /usr/local/bin
 	chmod +x /usr/local/bin/mk*
     fi
@@ -132,7 +125,6 @@ rc_add bootmisc boot
 rc_add syslog boot
 rc_add networking boot
 
-# add out new service to default runlevel
 rc_add mk default
 
 rc_add mount-ro shutdown
