@@ -1,7 +1,7 @@
 # Razor Microkernel for ppc64le
-Build Alpine Linux iso for ppc64le in order to setup a Razor mircokernel.
+Build Alpine Linux 3.7.0 iso for ppc64le in order to setup a Razor mircokernel.
 
-More info: https://github.com/puppetlabs/razor-el-mk/blob/master/README.md
+x86 info: https://github.com/puppetlabs/razor-el-mk/blob/master/README.md
 
 # How to Run
 
@@ -37,3 +37,5 @@ More info:
 https://wiki.alpinelinux.org/wiki/How_to_make_a_custom_ISO_image_with_mkimage
 
 Generating the PXE bootable image: https://wiki.alpinelinux.org/wiki/Talk:PXE_boot
+
+https://wiki.alpinelinux.org/wiki/Ppc64le
