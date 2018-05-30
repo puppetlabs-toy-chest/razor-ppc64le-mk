@@ -48,6 +48,12 @@ rm -rf $BUILD_DIR/my-gems/facter
 # location of razor-mk-agent-008.gem
 cp ./pkg/*.gem $BUILD_DIR/my-gems
 
+#TODO create .apk from gems in $build_dir/my_gems
+# find / | grep apk.rb (line 255)
+# #full_record_path = add_paxstring(full_record_path)
+#fpm -n factor -a ppc64le -s gem -t apk ./facter-2.5.1.gem
+#fpm -n razor-mk-agent -a ppc64le -s gem -t apk ./razor-mk-agent-008.gem
+
 # move shell scripts used by mk OpenRC service 
 cp ./bin/mk-register $BUILD_DIR
 cp ./bin/mk-update $BUILD_DIR
