@@ -33,6 +33,7 @@ Read the output from build command and look for build dir in /tmp
 
 
 More info:
+https://wiki.alpinelinux.org/wiki/PXE_boot#Configure_mkinitfs_to_generate_a_PXE-bootable_initrd
 
 https://wiki.alpinelinux.org/wiki/How_to_make_a_custom_ISO_image_with_mkimage
 
