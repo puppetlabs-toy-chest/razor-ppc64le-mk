@@ -51,8 +51,12 @@ cp ./pkg/*.gem $BUILD_DIR/my-gems
 #TODO create .apk from gems in $build_dir/my_gems
 # find / | grep apk.rb (line 255)
 # #full_record_path = add_paxstring(full_record_path)
-#fpm -n factor -a ppc64le -s gem -t apk ./facter-2.5.1.gem
-#fpm -n razor-mk-agent -a ppc64le -s gem -t apk ./razor-mk-agent-008.gem
+./fpm -n factor -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/facter-2.5.1.gem
+./fpm -n razor-mk-agent -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/razor-mk-agent-008.gem
+#stores apks in current dir
+cp ./*.apk $BUILD_DIR/my-gems
+#move the apks to a dir where mkimg.base.sh can grab them and put on iso
+# custom apks are also stored in /etc/razor on build machine as a backup
 
 # move shell scripts used by mk OpenRC service 
 cp ./bin/mk-register $BUILD_DIR
@@ -64,6 +68,7 @@ git clone https://github.com/alpinelinux/aports.git
 # copy my custom razor profile
 cp genapkovl-razor.sh ./aports/scripts
 cp mkimg.razor.sh ./aports/scripts
+cp mkimg.base.sh ./aports/scripts
 
 cd aports/scripts
 

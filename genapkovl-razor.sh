@@ -68,6 +68,8 @@ BUILD_DIR=/etc/razor-build
 #/etc/razor contains scripts to start service
 mkdir -p "$tmp"/etc/razor
 cp $BUILD_DIR/mk* "$tmp"/etc/razor
+#just a backup to make sure apks are somewhere on iso
+cp $BUILD_DIR/my-gems/*.apk "$tmp"/etc/razor
 
 mkdir -p "$tmp"/etc/init.d/
 makefile root:root 0755 "$tmp"/etc/init.d/mk <<EOF
