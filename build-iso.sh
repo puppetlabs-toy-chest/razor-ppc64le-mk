@@ -3,6 +3,10 @@
 #setup the env to build a ppc64le vanilla iso for razor
 # https://wiki.alpinelinux.org/wiki/How_to_make_a_custom_ISO_image_with_mkimage
 
+# HOW IT WORKS:
+# setup repositories, create razor gems, turn gems into .apks, setup razor scripts, 
+#	pull aports repo, build razor profile into .iso image.
+
 # where scripts and gems will exist so genapkovl can grab them
 BUILD_DIR=/etc/razor-build
 
@@ -31,7 +35,8 @@ abuild-keygen -i -a
 cp /root/.abuild/root-*.rsa.pub /etc/apk/keys
 cp /root/.abuild/root-*.rsa.pub /etc/apk/keys.pub
 
-# build customer razor-mk-agent.gem
+
+# build custom razor-mk-agent.gem
 bundle install
 bundle exec rake build
 
@@ -75,6 +80,7 @@ cd aports/scripts
 # where .iso will be once complete
 mkdir -p ~/iso
 
-# build the .iso for ppc6l4 using razor profile and output to ~/iso
+# build the .iso for ppc64le using razor profile and output to ~/iso
 # the edge repo has the kernel and other special apks so need to use it
 sh mkimage.sh --tag main --outdir ~/iso --arch ppc64le --repository http://dl-cdn.alpinelinux.org/alpine/edge/main --profile razor
+#mkimage -> mkimg.razor.sh -> genapkovl-razor.sh -> mkimg.base.sh
