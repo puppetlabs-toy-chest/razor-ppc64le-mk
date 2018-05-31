@@ -59,15 +59,13 @@ net-tools
 EOF
 
 BUILD_DIR=/etc/razor-build
+#/etc/razor-build exists on machine creating .iso (build machine)
+#/etc/gems and /etc/razor will be on .iso and booted on bare metal nodes
 
-#/etc/razor-build exists on build machine
-#/etc/gems and /etc/razor will be on machine we want to get info for
-#mkdir -p "$tmp"/etc/gems
-#cp $BUILD_DIR/my-gems/*.gem "$tmp"/etc/gems
-
-#/etc/razor contains scripts to start service
+#scripts used by mk service
 mkdir -p "$tmp"/etc/razor
 cp $BUILD_DIR/mk* "$tmp"/etc/razor
+
 #just a backup to make sure apks are somewhere on iso
 cp $BUILD_DIR/my-gems/*.apk "$tmp"/etc/razor
 
@@ -127,6 +125,7 @@ rc_add bootmisc boot
 rc_add syslog boot
 rc_add networking boot
 
+# add our custom razor service to default run level
 rc_add mk default
 
 rc_add mount-ro shutdown

@@ -19,9 +19,10 @@ echo "http://dl-5.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositorie
 echo "http://dl-cdn.alpinelinux.org/alpine/v3.7/main" >> /etc/apk/repositories
 echo "http://dl-cdn.alpinelinux.org/alpine/v3.7/community" >> /etc/apk/repositories
 
-# build dependices from wiki
+apk del ruby ruby-dev
 apk update
-apk add ruby alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso git
+# build dependices from wiki and razor 
+apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso 'ruby<2.5.1' ruby-dev
 
 # needed to build the razor-mk-agent.gem
 gem install facter rake bundler --no-document
