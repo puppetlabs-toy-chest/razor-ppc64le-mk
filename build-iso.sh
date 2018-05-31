@@ -58,7 +58,7 @@ rm -rf $BUILD_DIR/my-gems/facter #remove extra build dirs
 #need to comment out a line to get working apk
 fpm_file=$(find /usr/lib/ruby | grep apk.rb) 
 #line 255 #full_record_path = add_paxstring(full_record_path)
-cp -fu ./apk.rb $fpm_file
+cp -f ./apk.rb $fpm_file
 
 #build 2 apks from 2 gems
 fpm -n facter -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/facter-2.5.1.gem
