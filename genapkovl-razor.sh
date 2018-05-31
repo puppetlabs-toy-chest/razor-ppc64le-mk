@@ -59,6 +59,21 @@ net-tools
 mkinitfs
 EOF
 
+
+mkdir -p "$tmp"/etc/apk
+makefile root:root 0644 "$tmp"/etc/motd <<EOF
+Welcome to the Razor Microkernel!
+
+To generate a PXE bootable image execute the following:
+  echo "/usr/share/udhcpc/default.script" > /etc/mkinitfs/features.d/dhcp.files
+  echo "kernel/net/packet/af_packet.ko" > etc/mkinitfs/features.d/dhcp.modules
+  echo "kernel/fs/nfs/*" > /etc/mkinitfs/features.d/nfs.modules
+  echo 'features="ata base bootchart cdrom cramfs ext2 ext3 ext4 xfs floppy keymap kms raid scsi usb virtio squashfs network dhcp nfs"' > /etc/mkinitfs/mkinitfs.conf
+
+  mkinitfs -o /root/pxerd
+EOF
+
+
 BUILD_DIR=/etc/razor-build
 #/etc/razor-build exists on machine creating .iso (build machine)
 
