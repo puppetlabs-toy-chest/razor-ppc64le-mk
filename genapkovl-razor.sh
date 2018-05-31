@@ -60,8 +60,8 @@ EOF
 
 BUILD_DIR=/etc/razor-build
 #/etc/razor-build exists on machine creating .iso (build machine)
-#/etc/gems and /etc/razor will be on .iso and booted on bare metal nodes
 
+#TODO only need the 3 scripts? 
 #scripts used by mk service
 mkdir -p "$tmp"/etc/razor
 cp $BUILD_DIR/mk* "$tmp"/etc/razor
