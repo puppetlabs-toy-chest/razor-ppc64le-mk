@@ -8,7 +8,6 @@ profile_razor() {
 	output_format="iso"
 	kernel_cmdline="nomodeset"
 	apks="$apks
-		bkeymaps alpine-base alpine-mirrors network-extras openssl openssh
-		chrony tzdata ruby ruby-rake ruby-bundler net-tools"
+		bkeymaps alpine-base alpine-mirrors network-extras openssl openssh chrony tzdata ruby ruby-rake ruby-bundler net-tools"
 	apkovl="genapkovl-razor.sh"
 }
