@@ -59,7 +59,7 @@ rm -rf $BUILD_DIR/my-gems/facter #remove extra dirs
 #TODO create .apk from gems in $build_dir/my_gems
 # find / | grep apk.rb (line 255)
 # #full_record_path = add_paxstring(full_record_path)
-./fpm -n factor -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/facter-2.5.1.gem
+./fpm -n facter -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/facter-2.5.1.gem
 ./fpm -n razor-mk-agent -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/razor-mk-agent-008.gem
 #stores apks in current dir
 cp ./*.apk $BUILD_DIR/my-gems
