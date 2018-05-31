@@ -36,23 +36,26 @@ abuild-keygen -i -a
 cp /root/.abuild/root-*.rsa.pub /etc/apk/keys
 cp /root/.abuild/root-*.rsa.pub /etc/apk/keys.pub
 
+# setup dir for building gems and apks
+mkdir -p $BUILD_DIR/my-gems
+mkdir -p $BUILD_DIR/my-gems/facter
 
 # build custom razor-mk-agent.gem
 bundle install
 bundle exec rake build
 
-mkdir -p $BUILD_DIR/my-gems
-mkdir -p $BUILD_DIR/my-gems/facter
+# location of razor-mk-agent-008.gem
+cp ./pkg/*.gem $BUILD_DIR/my-gems
 
-# local install these gems so genapkovl can grab them
+# local install facter gem
 gem install facter --no-document -i $BUILD_DIR/my-gems/facter
 
 # move all gems for .iso in /etc/razor-build/my-gems
 cp $BUILD_DIR/my-gems/facter/cache/*.gem $BUILD_DIR/my-gems
-rm -rf $BUILD_DIR/my-gems/facter
+rm -rf $BUILD_DIR/my-gems/facter #remove extra dirs
 
-# location of razor-mk-agent-008.gem
-cp ./pkg/*.gem $BUILD_DIR/my-gems
+pwd 
+sleep 5
 
 #TODO create .apk from gems in $build_dir/my_gems
 # find / | grep apk.rb (line 255)
