@@ -25,7 +25,7 @@ apk update
 apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso 'ruby<2.5.1' ruby-dev
 
 # needed to build the razor-mk-agent.gem
-gem install facter rake bundler --no-document
+gem install fpm facter rake bundler --no-document
 
 # according to wiki, need this use to build .iso
 adduser build -G abuild
@@ -54,8 +54,7 @@ gem install facter --no-document -i $BUILD_DIR/my-gems/facter
 cp $BUILD_DIR/my-gems/facter/cache/*.gem $BUILD_DIR/my-gems
 rm -rf $BUILD_DIR/my-gems/facter #remove extra dirs
 
-pwd 
-sleep 5
+#pwd: /root/testski/razor-ppc64le-mk
 
 #TODO create .apk from gems in $build_dir/my_gems
 # find / | grep apk.rb (line 255)
