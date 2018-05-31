@@ -55,10 +55,14 @@ gem install facter --no-document -i $BUILD_DIR/my-gems/facter
 cp $BUILD_DIR/my-gems/facter/cache/*.gem $BUILD_DIR/my-gems
 rm -rf $BUILD_DIR/my-gems/facter #remove extra build dirs
 
-# find / | grep apk.rb (line 255)
-# #full_record_path = add_paxstring(full_record_path)
-./fpm -n facter -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/facter-2.5.1.gem
-./fpm -n razor-mk-agent -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/razor-mk-agent-008.gem
+#need to comment out a line to get working apk
+fpm_file=$(find /usr/lib/ruby | grep apk.rb) 
+#line 255 #full_record_path = add_paxstring(full_record_path)
+cp -fu ./apk.rb $fpm_file
+
+#build 2 apks from 2 gems
+fpm -n facter -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/facter-2.5.1.gem
+fpm -n razor-mk-agent -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/razor-mk-agent-008.gem
 
 #copy apks in current dir to build folder so mkimg.base can copy them into iso
 cp ./*.apk $BUILD_DIR/my-gems
