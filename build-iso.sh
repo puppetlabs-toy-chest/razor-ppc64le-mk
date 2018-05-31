@@ -25,7 +25,7 @@ apk update
 apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso 'ruby<2.5.1' ruby-dev
 
 # needed to build the razor-mk-agent.gem
-gem install fpm facter rake bundler --no-document
+gem install etc fpm facter rake bundler --no-document
 
 # according to wiki, need this use to build .iso
 adduser build -G abuild
