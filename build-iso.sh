@@ -68,6 +68,9 @@ fpm -n razor-mk-agent -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/razor-mk-agent
 cp ./*.apk $BUILD_DIR/my-gems
 # custom apks are also stored in /etc/razor on build machine as a backup
 
+#sign the apks
+abuild-sign $BUILD_DIR/my-gems/*.apk
+
 #TODO Is this all the files we need for mk? what about ./lib/
 # move shell scripts used by mk OpenRC service 
 cp ./bin/mk-register $BUILD_DIR
