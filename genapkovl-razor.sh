@@ -71,6 +71,8 @@ To generate a PXE bootable image execute the following:
   echo 'features="ata base bootchart cdrom cramfs ext2 ext3 ext4 xfs floppy keymap kms raid scsi usb virtio squashfs network dhcp nfs"' > /etc/mkinitfs/mkinitfs.conf
 
   mkinitfs -o /root/pxerd
+
+  View these commands in /etc/motd
 EOF
 
 
