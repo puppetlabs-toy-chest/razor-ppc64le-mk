@@ -56,6 +56,7 @@ ruby
 ruby-rake
 ruby-bundler
 net-tools
+mkinitfs
 EOF
 
 BUILD_DIR=/etc/razor-build
