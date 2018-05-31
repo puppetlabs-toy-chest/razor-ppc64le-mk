@@ -4,8 +4,8 @@
 # https://wiki.alpinelinux.org/wiki/How_to_make_a_custom_ISO_image_with_mkimage
 
 # HOW IT WORKS:
-# setup repositories, create razor gems, turn gems into .apks, setup razor scripts, 
-#	pull aports repo, build razor profile into .iso image.
+# setup repositories, build razor gems, convert gems into .apks, 
+  #setup razor scripts, pull aports repo, build razor profile into .iso image.
 
 # where scripts and gems will exist so genapkovl can grab them
 BUILD_DIR=/etc/razor-build
@@ -21,10 +21,11 @@ echo "http://dl-cdn.alpinelinux.org/alpine/v3.7/community" >> /etc/apk/repositor
 
 apk del ruby ruby-dev
 apk update
+
 # build dependices from wiki and razor 
 apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso 'ruby<2.5.1' ruby-dev
 
-# needed to build the razor-mk-agent.gem
+# needed to build the razor-mk-agent.gem and convert gems to .apks
 gem install etc fpm facter rake bundler --no-document
 
 # according to wiki, need this use to build .iso
@@ -38,7 +39,6 @@ cp /root/.abuild/root-*.rsa.pub /etc/apk/keys.pub
 
 # setup dir for building gems and apks
 mkdir -p $BUILD_DIR/my-gems
-mkdir -p $BUILD_DIR/my-gems/facter
 
 # build custom razor-mk-agent.gem
 bundle install
@@ -48,22 +48,20 @@ bundle exec rake build
 cp ./pkg/*.gem $BUILD_DIR/my-gems
 
 # local install facter gem
+mkdir -p $BUILD_DIR/my-gems/facter
 gem install facter --no-document -i $BUILD_DIR/my-gems/facter
 
 # move all gems for .iso in /etc/razor-build/my-gems
 cp $BUILD_DIR/my-gems/facter/cache/*.gem $BUILD_DIR/my-gems
-rm -rf $BUILD_DIR/my-gems/facter #remove extra dirs
+rm -rf $BUILD_DIR/my-gems/facter #remove extra build dirs
 
-#pwd: /root/testski/razor-ppc64le-mk
-
-#TODO create .apk from gems in $build_dir/my_gems
 # find / | grep apk.rb (line 255)
 # #full_record_path = add_paxstring(full_record_path)
 ./fpm -n facter -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/facter-2.5.1.gem
 ./fpm -n razor-mk-agent -a ppc64le -s gem -t apk $BUILD_DIR/my-gems/razor-mk-agent-008.gem
-#stores apks in current dir
+
+#copy apks in current dir to build folder so mkimg.base can copy them into iso
 cp ./*.apk $BUILD_DIR/my-gems
-#move the apks to a dir where mkimg.base.sh can grab them and put on iso
 # custom apks are also stored in /etc/razor on build machine as a backup
 
 # move shell scripts used by mk OpenRC service 
@@ -73,6 +71,7 @@ cp ./bin/mk $BUILD_DIR/mk.rb # eventully this will be renamed to just mk
 
 # repo with build scripts
 git clone https://github.com/alpinelinux/aports.git
+
 # copy my custom razor profile
 cp genapkovl-razor.sh ./aports/scripts
 cp mkimg.razor.sh ./aports/scripts
