@@ -146,6 +146,7 @@ rc_add networking boot
 
 # add our custom razor service to default run level
 rc_add mk default
+rc_add sshd default
 
 rc_add mount-ro shutdown
 rc_add killprocs shutdown
