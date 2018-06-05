@@ -102,8 +102,9 @@ depend() {
 start_pre() {
     sleep 30
     if [ ! -f /usr/bin/facter ]; then
-	apk add /media/cdrom/apks/ppc64le/facter*.apk --force-non-repository --allow-untrusted
-	apk add /media/cdrom/apks/ppc64le/razor-mk-agent*.apk --force-non-repository --allow-untrusted
+	#this should be part of the initrd so facter should always be installed
+	apk add facter --allow-untrusted
+	apk add razor-mk-agent --allow-untrusted
    	mkdir -p /usr/local/bin 
 	mv /etc/razor/mk-* /usr/local/bin
 	chmod +x /usr/local/bin/mk*
