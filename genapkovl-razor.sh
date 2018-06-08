@@ -36,9 +36,6 @@ mkdir -p "$tmp"/etc/network
 makefile root:root 0644 "$tmp"/etc/network/interfaces <<EOF
 auto lo
 iface lo inet loopback
-
-auto eth0
-iface eth0 inet dhcp
 EOF
 
 mkdir -p "$tmp"/etc/apk
@@ -143,6 +140,9 @@ rc_add hostname boot
 rc_add bootmisc boot
 rc_add syslog boot
 rc_add networking boot
+
+# add firstboot which allows us to specify ssh_key as kernel arg
+rc_add firstboot default
 
 # add our custom razor service to default run level
 rc_add mk default
