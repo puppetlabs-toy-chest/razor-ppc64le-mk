@@ -15,7 +15,7 @@ download_packages() {
 apk update
 
 # build dependices from wiki and razor
-apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso ruby ruby-dev
+apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso 'ruby<2.5.1' ruby-dev
 
 # needed to build the razor-mk-agent.gem and convert gems to .apks
 gem install etc fpm facter rake bundler --no-document
