@@ -7,11 +7,11 @@ depend() {
 }
 start_pre() {
     sleep 30
-    if [ ! -f /usr/bin/facter ]; then
+  #  if [ ! -f /usr/bin/facter ]; then
 	#this should be part of the initrd so facter should always be installed
-	apk add facter --allow-untrusted
-	apk add razor-mk-agent --allow-untrusted
-    fi
+	#apk add /etc/razor/facter --allow-untrusted
+	#apk add /etc/razor/razor-mk-agent --allow-untrusted
+  #  fi
 }
 start() {
     ebegin "Starting mk"
