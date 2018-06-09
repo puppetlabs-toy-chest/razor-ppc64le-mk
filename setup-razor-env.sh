@@ -93,7 +93,7 @@ generate_pxe_initramfs() {
 
 check_kernel() {
   supported_kernel="4.14.48-0-vanilla"
-  if [ $(uname -r) != $supported_kernel];then
+  if [ $(uname -r) != $supported_kernel ];then
     echo "Please update kernel to at least $supported_kernel"
     exit 1
   fi
