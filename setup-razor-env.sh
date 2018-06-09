@@ -25,28 +25,26 @@ create_apks_from_gems() {
   bundle exec rake build
 
   # location of razor-mk-agent-008.gem
-  cp ./pkg/*.gem $GEM_DIR/
+  cp $BUILD_DIR/pkg/*.gem $GEM_DIR/
 
   # local install facter gem
   gem install facter --no-document -i $GEM_DIR/
 
   # move all gems into one location
   cp $GEM_DIR/cache/*.gem $GEM_DIR/
-  #rm -rf ./facter #remove extra build dirs
 
   #need to comment out a line to get working apk
   fpm_file=$(find /usr/lib/ruby | grep apk.rb)
   #line 255 #full_record_path = add_paxstring(full_record_path)
-  cp -f ./apk.rb $fpm_file
+  cp -f $BUILD_DIR/apk.rb $fpm_file
 
   #build 2 apks from 2 gems
   mkdir -p $APK_DIR/
   cd $APK_DIR #where we will build apks
-  fpm -n facter -a ppc64le -s gem -t apk ../$GEM_DIR/facter-2.5.1.gem
-  fpm -n razor-mk-agent -a ppc64le -s gem -t apk ../$GEM_DIR/razor-mk-agent-008.gem
+  fpm -n facter -a ppc64le -s gem -t apk $GEM_DIR/facter-2.5.1.gem
+  fpm -n razor-mk-agent -a ppc64le -s gem -t apk $GEM_DIR/razor-mk-agent-008.gem
 
   #sign the apks
-  #TODO where are apks built?
  abuild-sign $APK_DIR/*.apk
 
 }
@@ -59,7 +57,7 @@ install_custom_apks() {
 setup_mk_service() {
   #TODO Is this all the files we need for mk? what about ./lib/
   # move shell scripts used by mk OpenRC service
-  cd ../
+  cd $BUILD_DIR
   mkdir -p /usr/local/bin
   chmod +x $BUILD_DIR/bin/mk*
 	cp -R $BUILD_DIR/bin /usr/local/bin
