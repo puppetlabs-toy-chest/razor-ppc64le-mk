@@ -61,11 +61,11 @@ setup_mk_service() {
   # move shell scripts used by mk OpenRC service
   cd ../
   mkdir -p /usr/local/bin
-  chmod +x ./bin/mk*
-	cp -R ./bin /usr/local/bin
-	chmod +x ./bin/mk*
+  chmod +x $BUILD_DIR/bin/mk*
+	cp -R $BUILD_DIR/bin /usr/local/bin
+	chmod +x $BUILD_DIR/bin/mk*
 
-  cp ./mk /etc/init.d/
+  cp $BUILD_DIR/mk /etc/init.d/
 }
 
 start_mk_service() {
