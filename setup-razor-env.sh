@@ -36,7 +36,7 @@ create_apks_from_gems() {
   gem install facter --no-document -i $GEM_DIR/
 
   # move all gems into one location
-  cp $GEM_DIR/facter/cache/*.gem $GEM_DIR/
+  cp $GEM_DIR/cache/*.gem $GEM_DIR/
   #rm -rf ./facter #remove extra build dirs
 
   #need to comment out a line to get working apk
@@ -64,6 +64,7 @@ install_custom_apks() {
 setup_mk_service() {
   #TODO Is this all the files we need for mk? what about ./lib/
   # move shell scripts used by mk OpenRC service
+  cd ../
   mkdir -p /usr/local/bin
   chmod +x ./bin/mk*
 	cp -R ./bin /usr/local/bin
