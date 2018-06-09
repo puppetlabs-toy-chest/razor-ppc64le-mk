@@ -1,8 +1,8 @@
 #!/bin/sh
 #Written by Mick Tarsel
 
-#Create the environment for razor to copy into a initramfs
-#Eventually this will be in a PXE boot-able image for currently running Alpine instace
+#setup razor microkernel and generate a PXE boot-able image from currently
+   #running Alpine instance
 
 BUILD_DIR=$(pwd)
 # where gems and apks will exist for use by mk service
