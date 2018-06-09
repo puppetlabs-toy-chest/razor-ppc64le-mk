@@ -4,6 +4,10 @@
 #Create the environment for razor to copy into a initramfs
 #Eventually this will be in a PXE boot-able image for currently running Alpine instace
 
+BUILD_DIR=$(pwd)
+# where gems and apks will exist for use by mk service
+GEM_DIR=$BUILD_DIR/gems
+APK_DIR=$BUILD_DIR/apks
 
 download_packages() {
   apk del ruby ruby-dev
@@ -20,6 +24,7 @@ create_apks_from_gems() {
   # setup dir for building gems
   mkdir -p $GEM_DIR/
 
+  cd $BUILD_DIR
   # build custom razor-mk-agent.gem
   bundle install
   bundle exec rake build
@@ -34,9 +39,9 @@ create_apks_from_gems() {
   cp $GEM_DIR/cache/*.gem $GEM_DIR/
 
   #need to comment out a line to get working apk
-  fpm_file=$(find /usr/lib/ruby | grep apk.rb)
+  fpm_file=$(find /usr/lib/ruby/gems/2.4.0/gems/fpm* | grep apk.rb)
   #line 255 #full_record_path = add_paxstring(full_record_path)
-  cp -f $BUILD_DIR/apk.rb $fpm_file
+  sudo cp -f $BUILD_DIR/apk.rb $fpm_file
 
   #build 2 apks from 2 gems
   mkdir -p $APK_DIR/
@@ -60,9 +65,9 @@ setup_mk_service() {
   cd $BUILD_DIR
   mkdir -p /usr/local/bin
   chmod +x $BUILD_DIR/bin/mk*
-	cp -R $BUILD_DIR/bin /usr/local/bin
-	chmod +x $BUILD_DIR/bin/mk*
+  cp -R $BUILD_DIR/bin /usr/local/bin
 
+  chmod +x $BUILD_DIR/mk
   cp $BUILD_DIR/mk /etc/init.d/
 }
 
@@ -119,10 +124,6 @@ tar_microkernel(){
 }
 
 #BEGIN EXECUTION
-BUILD_DIR=$pwd
-# where gems and apks will exist for use by mk service
-GEM_DIR=$BUILD_DIR/gems
-APK_DIR=$BUILD_DIR/apks
 
 check_kernel
 download_packages #setup repositories to install needed packages to build
