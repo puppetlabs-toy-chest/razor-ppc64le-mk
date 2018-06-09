@@ -11,9 +11,6 @@ start_pre() {
 	#this should be part of the initrd so facter should always be installed
 	apk add facter --allow-untrusted
 	apk add razor-mk-agent --allow-untrusted
-   	mkdir -p /usr/local/bin
-	mv /etc/razor/mk-* /usr/local/bin
-	chmod +x /usr/local/bin/mk*
     fi
 }
 start() {
