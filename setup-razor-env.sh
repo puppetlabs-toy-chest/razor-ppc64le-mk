@@ -67,6 +67,7 @@ setup_mk_service() {
   chmod +x $BUILD_DIR/bin/mk*
   cp -R $BUILD_DIR/bin /usr/local/bin
 
+#TODO dir structure not setup correctly. /usr/local/bin/bin on test box
   chmod +x $BUILD_DIR/mk
   cp $BUILD_DIR/mk /etc/init.d/
 }
