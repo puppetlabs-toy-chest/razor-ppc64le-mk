@@ -29,6 +29,12 @@ Due to https://bugs.alpinelinux.org/issues/8966 you will have to run the followi
 mv /boot/vmlinuz-vanilla /boot/vmlinuz
 ```
 
+Reboot into new kernel:
+
+```bash
+reboot
+```
+
 ## Installing Kernel from Source
 Create a user account abuild. More info: https://wiki.alpinelinux.org/wiki/How_to_make_a_custom_ISO_image_with_mkimage
 
