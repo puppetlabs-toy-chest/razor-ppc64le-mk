@@ -113,8 +113,12 @@ generate_pxe_initramfs() {
   echo "Generating pxe-initramfs..."
   echo ""
   pxe_dir=/root
+  #TODO dont need to generate this every time. if it exsits, extract it
+  #TODO im guessing packages are not included in this by default? will have to
+    #extract and add.
   mkinitfs -o $pxe_dir/pxe-initramfs
   echo "initramfs in $pxe_dir"
+
 }
 
 check_kernel() {
@@ -185,5 +189,6 @@ start_mk_service;
 setup_pxe_boot; #edit /etc/mkinitfs
 #generate_pxe_initramfs
 #tar_microkernel #take vmlinuz and new pxe-initramfs and put in a tarball
+
 #build_iso #TODO is this needed or use build-iso.sh?
 #cleanup #remove everything
