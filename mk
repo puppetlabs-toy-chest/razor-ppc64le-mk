@@ -6,8 +6,9 @@ depend() {
     use dns logger
 }
 start_pre() {
-		#no harm in making sure packages are already installed.
+		#make sure packages are already installed.
 		apk add /etc/razor/apks/* --allow-untrusted
+		#command will fail on build, but service will start ok
 
 		#dir and files specified in verify_pxe_initramfs() in setup-razor-env.sh
 		if [ ! -f /usr/local/bin/mk-register ]; then
