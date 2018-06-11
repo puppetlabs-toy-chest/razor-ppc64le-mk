@@ -4,7 +4,7 @@ Build Alpine Linux 3.7.0 ppc64le tarball to use as the Razor microkernel.
 x86 info: https://github.com/puppetlabs/razor-el-mk/blob/master/README.md
 
 # How to Run
-Setup an Alpine ppc64le machine with a 4.14.48-0-vanilla. Either download newer kernel from an Edge repo or follow instructions below.
+Setup an Alpine ppc64le machine with a 4.14.48-0-vanilla. Either download newer kernel from an Edge repo or follow instructions below to build kernel from source.
 
 Run scripts:
 
