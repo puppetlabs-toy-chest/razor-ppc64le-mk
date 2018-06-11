@@ -206,5 +206,8 @@ generate_pxe_initramfs;
   #and add what we want so service can use it.
 verify_pxe_initramfs;
 
+#TODO verify OpenRC init is using network interface that is up
+#https://github.com/alpinelinux/mkinitfs/pull/28
+
 #take vmlinuz and new pxe-initramfs and put in a tarball just like x86
 tar_microkernel;
