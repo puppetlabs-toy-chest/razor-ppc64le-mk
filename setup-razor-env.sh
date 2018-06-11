@@ -152,7 +152,7 @@ verify_pxe_initramfs() {
   cp  $BUILD_DIR/bin/* ./etc/razor
 
   #zip it back up
-  find . | cpio -H newrc -o | gzip -9 > $PXE_DIR
+  find . | cpio -H newrc -o | gzip -9 > $PXE_DIR/pxe-initramfs
 }
 
 #TODO never tested
@@ -183,13 +183,14 @@ tar_microkernel(){
   echo ""
   echo "Tarring up vmlinuz and pxe-initramfs..."
   echo ""
+  cd $BUILD_DIR
   mkdir -p $BUILD_DIR/microkernel-ppc64le
   cp /boot/vmlinuz $BUILD_DIR/microkernel-ppc64le
   cp $PXE_DIR/pxe-initramfs $BUILD_DIR/microkernel-ppc64le
   mv $BUILD_DIR/microkernel-ppc64le/pxe-initramfs $BUILD_DIR/microkernel-ppc64le/pxerd
 
   #TODO sign it?
-  tar cf microkernel-ppc64le.tar $BUILD_DIR/microkernel-ppc64le
+  tar cf $BUILD_DIR/microkernel-ppc64le.tar $BUILD_DIR/microkernel-ppc64le
 }
 
 cleanup() {
