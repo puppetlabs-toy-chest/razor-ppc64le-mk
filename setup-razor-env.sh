@@ -155,30 +155,6 @@ verify_pxe_initramfs() {
   find . | cpio -H newrc -o | gzip -9 > $PXE_DIR/pxe-initramfs
 }
 
-#TODO never tested
-build_iso() {
-  echo ""
-  echo "Building iso..."
-  echo ""
-  # repo with build scripts
-  git clone https://github.com/alpinelinux/aports.git
-
-  # copy my custom razor profile
-  cp genapkovl-razor.sh ./aports/scripts
-  cp mkimg.razor.sh ./aports/scripts
-  cp mkimg.base.sh ./aports/scripts
-
-  cd aports/scripts
-
-  # where .iso will be once complete
-  mkdir -p ~/iso
-
-  # build the .iso for ppc64le using razor profile and output to ~/iso
-  # the edge repo has the kernel and other special apks so need to use it
-  sh mkimage.sh --tag main --outdir ~/iso --arch ppc64le --repository http://dl-cdn.alpinelinux.org/alpine/edge/main --profile razor
-  #mkimage -> mkimg.razor.sh -> genapkovl-razor.sh -> mkimg.base.sh
-}
-
 tar_microkernel(){
   echo ""
   echo "Tarring up vmlinuz and pxe-initramfs..."
@@ -189,8 +165,10 @@ tar_microkernel(){
   cp $PXE_DIR/pxe-initramfs $BUILD_DIR/microkernel-ppc64le
   mv $BUILD_DIR/microkernel-ppc64le/pxe-initramfs $BUILD_DIR/microkernel-ppc64le/pxerd
 
+  cd $BUILD_DIR #tar doesnt like using / in front of tar name.
+  tar cf ./microkernel-ppc64le.tar $BUILD_DIR/microkernel-ppc64le
   #TODO sign it?
-  tar cf $BUILD_DIR/microkernel-ppc64le.tar $BUILD_DIR/microkernel-ppc64le
+
 }
 
 ####################################
@@ -229,7 +207,4 @@ generate_pxe_initramfs;
 verify_pxe_initramfs;
 
 #take vmlinuz and new pxe-initramfs and put in a tarball just like x86
-tar_microkernel
-
-#TODO is this needed or use build-iso.sh?
-#build_iso
+tar_microkernel;
