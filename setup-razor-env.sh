@@ -124,6 +124,18 @@ tar_microkernel(){
   cp /boot/vmlinuz ./
 }
 
+cleanup() {
+  #Will not remove pxe bootable configs or apk.rb for fpm
+  apk del ruby ruby-dev facter razor-mk-agent
+  rm -rf $BUILD_DIR/pkg
+  rm -rf $BUILD_DIR/gems
+  rm -rf $BUILD_DIR/apks
+  rm /usr/local/bin/mk*
+  rm -rf /root/pxe-initramfs
+  /etc/init.d/mk stop
+  rm /etc/init.d/mk
+}
+
 #BEGIN EXECUTION
 
 check_kernel
@@ -136,3 +148,4 @@ start_mk_service
 #generate_pxe_initramfs
 #tar_microkernel #take vmlinuz and new pxe-initramfs and put in a tarball
 #build_iso #TODO is this needed or use build-iso.sh?
+cleanup #remove everything
