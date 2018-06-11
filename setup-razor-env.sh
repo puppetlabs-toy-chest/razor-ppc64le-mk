@@ -165,10 +165,10 @@ tar_microkernel(){
   cp $PXE_DIR/pxe-initramfs $BUILD_DIR/microkernel-ppc64le
   mv $BUILD_DIR/microkernel-ppc64le/pxe-initramfs $BUILD_DIR/microkernel-ppc64le/pxerd
 
-  cd $BUILD_DIR #tar doesnt like using / in front of tar name.
-  tar cf ./microkernel-ppc64le.tar $BUILD_DIR/microkernel-ppc64le
+  cd $BUILD_DIR #tar: Removing leading `/' from member names.
+  #a security feature of tar to not use absolute paths.
+  tar -cf ./microkernel-ppc64le.tar ./microkernel-ppc64le
   #TODO sign it?
-
 }
 
 ####################################
