@@ -7,8 +7,11 @@ depend() {
 }
 start_pre() {
 		#make sure packages are already installed.
-		apk add /etc/razor/apks/* --allow-untrusted
-		#command will fail on build, but service will start ok
+		if [ -f /etc/razor/apks ];then
+			#make sure we have dir of apks. otherwise, likely on build machine
+			apk add /etc/razor/apks/* --allow-untrusted
+		fi
+
 
 		#dir and files specified in verify_pxe_initramfs() in setup-razor-env.sh
 		if [ ! -f /usr/local/bin/mk-register ]; then
