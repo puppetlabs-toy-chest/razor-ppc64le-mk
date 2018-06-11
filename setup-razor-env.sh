@@ -68,7 +68,7 @@ setup_mk_service() {
   cp  $BUILD_DIR/bin/* /usr/local/bin
 
   chmod +x $BUILD_DIR/mk
-  
+
   if [ ! -f /etc/init.d/mk ]; then
     cp $BUILD_DIR/mk /etc/init.d/
     rc-update add mk default
@@ -77,7 +77,6 @@ setup_mk_service() {
 }
 
 start_mk_service() {
-  rc-service add mk default
   /etc/init.d/mk start
 }
 
