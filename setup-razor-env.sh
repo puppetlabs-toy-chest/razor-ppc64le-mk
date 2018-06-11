@@ -3,6 +3,7 @@
 
 #setup razor microkernel and generate a PXE boot-able image from currently
    #running Alpine instance
+   #go to bottom for start of execution
 
 BUILD_DIR=$(pwd)
 # where gems and apks will exist for use by mk service
@@ -10,6 +11,9 @@ GEM_DIR=$BUILD_DIR/gems
 APK_DIR=$BUILD_DIR/apks
 
 download_packages() {
+  echo ""
+  echo "Downloading packages..."
+  echo ""
   apk del ruby ruby-dev
 apk update
 
@@ -21,6 +25,9 @@ gem install etc fpm facter rake bundler --no-document
 }
 
 create_apks_from_gems() {
+  echo ""
+  echo "Creating apks from gems..."
+  echo ""
   # setup dir for building gems
   mkdir -p $GEM_DIR/
 
@@ -55,11 +62,17 @@ create_apks_from_gems() {
 }
 
 install_custom_apks() {
+  echo ""
+  echo "Installing custom apks..."
+  echo ""
   apk add $APK_DIR/facter*.apk --allow-untrusted
 	apk add $APK_DIR/razor-mk-agent*.apk --allow-untrusted
 }
 
 setup_mk_service() {
+  echo ""
+  echo "Setting up mk service..."
+  echo ""
   #TODO Is this all the files we need for mk? what about ./lib/
   # move shell scripts used by mk OpenRC service
   cd $BUILD_DIR
@@ -77,10 +90,17 @@ setup_mk_service() {
 }
 
 start_mk_service() {
+  echo ""
+  echo "Starting mk service..."
+  echo ""
   /etc/init.d/mk start
 }
 
 setup_pxe_boot() {
+  echo ""
+  echo "Setting up pxe boot..."
+  echo ""
+
   echo "/usr/share/udhcpc/default.script" > /etc/mkinitfs/features.d/dhcp.files
    echo "kernel/net/packet/af_packet.ko" > /etc/mkinitfs/features.d/dhcp.modules
    echo "kernel/fs/nfs/*" > /etc/mkinitfs/features.d/nfs.modules
@@ -89,12 +109,18 @@ setup_pxe_boot() {
 }
 
 generate_pxe_initramfs() {
+  echo ""
+  echo "Generating pxe-initramfs..."
+  echo ""
   pxe_dir=/root
   mkinitfs -o $pxe_dir/pxe-initramfs
   echo "initramfs in $pxe_dir"
 }
 
 check_kernel() {
+  echo ""
+  echo "Verifying kernel version..."
+  echo ""
   supported_kernel="4.14.48-0-vanilla"
   if [ $(uname -r) != $supported_kernel ];then
     echo "Please update kernel to at least $supported_kernel"
@@ -103,6 +129,9 @@ check_kernel() {
 }
 
 build_iso() {
+  echo ""
+  echo "Building iso..."
+  echo ""
   # repo with build scripts
   git clone https://github.com/alpinelinux/aports.git
 
@@ -124,10 +153,16 @@ build_iso() {
 
 #TODO vmlinuz and pxe-initramfs in one place
 tar_microkernel(){
+  echo ""
+  echo "Tarring up vmlinuz and pxe-initramfs..."
+  echo ""
   cp /boot/vmlinuz ./
 }
 
 cleanup() {
+  echo ""
+  echo "Cleaning up..."
+  echo ""
   #Will not remove pxe bootable configs or apk.rb for fpm
   apk del ruby ruby-dev facter razor-mk-agent
   rm -rf $BUILD_DIR/pkg
