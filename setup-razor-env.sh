@@ -68,9 +68,12 @@ setup_mk_service() {
   cp  $BUILD_DIR/bin/* /usr/local/bin
 
   chmod +x $BUILD_DIR/mk
-  #TODO if file doesnt exist, so we dont keep adding it to default
-  cp $BUILD_DIR/mk /etc/init.d/
-  rc-service add mk default
+  
+  if [ ! -f /etc/init.d/mk ]; then
+    cp $BUILD_DIR/mk /etc/init.d/
+    rc-update add mk default
+  fi
+
 }
 
 start_mk_service() {
@@ -150,4 +153,3 @@ check_kernel
 #tar_microkernel #take vmlinuz and new pxe-initramfs and put in a tarball
 #build_iso #TODO is this needed or use build-iso.sh?
 cleanup #remove everything
-
