@@ -136,9 +136,9 @@ verify_pxe_initramfs() {
   echo "Validating pxe-initramfs..."
   echo ""
 
-  mkdir -p $PXE_DIR/test #double check
-  cd $PXE_DIR/test
-  gunzip -c $PXE_DIR/pxe-initramfs | cpio -idmv #extract to ./PXE/test
+  mkdir -p $PXE_DIR/extracted
+  cd $PXE_DIR/extracted
+  gunzip -c $PXE_DIR/pxe-initramfs | cpio -idmv #extract to ./PXE/extracted
 
   #make sure all files are available for mk service.
 
