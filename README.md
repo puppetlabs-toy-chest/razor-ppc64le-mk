@@ -19,7 +19,7 @@ To reset the install and run it again (will delete everything built)
 
 ## Installing My Kernel
 ```bash
-wget https://github.com/puppetlabs/razor-ppc64le-mk/raw/master/kernel/linux-vanilla-4.14.48-r0.apk
+wget http://dl-cdn.alpinelinux.org/alpine/edge/main/ppc64le/linux-vanilla-4.14.48-r0.apk
 apk add ./linux-vanilla-4.14.48-r0.apk --allow-untrusted
 ```
 
