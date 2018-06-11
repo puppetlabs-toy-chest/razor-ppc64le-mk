@@ -65,7 +65,7 @@ setup_mk_service() {
   cd $BUILD_DIR
   mkdir -p /usr/local/bin
   chmod +x $BUILD_DIR/bin/mk*
-  cp -R $BUILD_DIR/bin /usr/local/bin
+  cp  $BUILD_DIR/bin/* /usr/local/bin
 
 #TODO dir structure not setup correctly. /usr/local/bin/bin on test box
   chmod +x $BUILD_DIR/mk
@@ -127,12 +127,12 @@ tar_microkernel(){
 #BEGIN EXECUTION
 
 check_kernel
-download_packages #setup repositories to install needed packages to build
-create_apks_from_gems #turn facter.gem and razor-mk-agent.gem into apks to use by Alpine
-install_custom_apks #install facter.apk and razor-mk-agent.apk
+#download_packages #setup repositories to install needed packages to build
+#create_apks_from_gems #turn facter.gem and razor-mk-agent.gem into apks to use by Alpine
+#install_custom_apks #install facter.apk and razor-mk-agent.apk
 setup_mk_service #move around executables used by mk service
 start_mk_service
-setup_pxe_boot #edit /etc/mkinitfs
+#setup_pxe_boot #edit /etc/mkinitfs
 #generate_pxe_initramfs
 #tar_microkernel #take vmlinuz and new pxe-initramfs and put in a tarball
 #build_iso #TODO is this needed or use build-iso.sh?
