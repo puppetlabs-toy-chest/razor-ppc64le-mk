@@ -217,37 +217,37 @@ cleanup() {
 check_kernel;
 
 #setup repositories to install needed packages to build
-#download_packages;
+download_packages;
 
- #turn facter.gem and razor-mk-agent.gem into apks to use by Alpine
-#create_apks_from_gems;
+#turn facter.gem and razor-mk-agent.gem into apks to use by Alpine
+create_apks_from_gems;
 
 #install facter.apk and razor-mk-agent.apk. locaed in ./apks
   #hoping this is loaded into pxe-initramfs
-#install_custom_apks;
+install_custom_apks;
 
 #move around executables used by mk service
-#setup_mk_service;
+setup_mk_service;
 
 #specified in ./mk
-#start_mk_service;
+start_mk_service;
 
 #edit /etc/mkinitfs to includ NICs and enable network/dhcp
-#setup_pxe_boot;
+setup_pxe_boot;
 
 #create a pxe-initrams in ./PXE
-#generate_pxe_initramfs;
+generate_pxe_initramfs;
 
 #make sure all files are on pxe-initramfs. make a dir
   #called /etc/razor where mk service can grab files
   #everything _should_ be included in pxe-initrams but this func will extract it
   #and add what we want so service can use it.
-#verify_pxe_initramfs;
+verify_pxe_initramfs;
 
 #take vmlinuz and new pxe-initramfs and put in a tarball just like x86
-#tar_microkernel
+tar_microkernel
 
 #TODO is this needed or use build-iso.sh?
 #build_iso
 
-cleanup; #remove everything
+#cleanup; #remove everything
