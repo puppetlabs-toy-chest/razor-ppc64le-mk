@@ -169,6 +169,7 @@ tar_microkernel(){
   #a security feature of tar to not use absolute paths.
   tar -cf ./microkernel-ppc64le.tar ./microkernel-ppc64le
   #TODO sign it?
+  echo "Succuessfully created microkernel-ppc64le.tar ....."
 }
 
 ####################################
@@ -211,3 +212,6 @@ verify_pxe_initramfs;
 
 #take vmlinuz and new pxe-initramfs and put in a tarball just like x86
 tar_microkernel;
+
+echo ""
+echo "done."
