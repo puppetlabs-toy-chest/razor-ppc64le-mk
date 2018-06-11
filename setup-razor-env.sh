@@ -9,6 +9,7 @@ BUILD_DIR=$(pwd)
 # where gems and apks will exist for use by mk service
 GEM_DIR=$BUILD_DIR/gems
 APK_DIR=$BUILD_DIR/apks
+PXE_DIR=$BUILD_DIR/pxe
 
 download_packages() {
   echo ""
@@ -106,18 +107,39 @@ setup_pxe_boot() {
    echo "kernel/fs/nfs/*" > /etc/mkinitfs/features.d/nfs.modules
    echo 'features="ata base bootchart cdrom cramfs ext2 ext3 ext4 xfs floppy keymap kms raid scsi usb virtio squashfs network dhcp nfs"' > /etc/mkinitfs/mkinitfs.conf
 
+   mkdir -p $PXE_DIR
 }
 
 generate_pxe_initramfs() {
   echo ""
   echo "Generating pxe-initramfs..."
   echo ""
-  pxe_dir=/root
+
   #TODO dont need to generate this every time. if it exsits, extract it
   #TODO im guessing packages are not included in this by default? will have to
     #extract and add.
-  mkinitfs -o $pxe_dir/pxe-initramfs
-  echo "initramfs in $pxe_dir"
+  mkinitfs -o $PXE_DIR/pxe-initramfs
+
+}
+
+verify_pxe_initramfs() {
+  cd $PXE_DIR
+  gunzip -c $PXE_DIR/pxe-initramfs | cpio -idmv
+
+  #check service
+  if [ ! -f $PXE_DIR/etc/init.d/mk ]; then
+    #TODO all the files in /usr/local/bin already included but no services
+    chmod +x $BUILD_DIR/mk
+    cp $BUILD_DIR/mk $PXE_DIR/etc/init.d/
+    rc-update add mk default
+  fi
+
+  #check facter
+  if [ ! -f $PXE_DIR/usr/bin/facter ]; then
+    #TODO copy apks to inintramfs and have service install them if not found
+    cp $(which facter) $PXE_DIR/usr/bin
+  fi
+  #TODO check razor-mk-agent
 
 }
 
@@ -187,7 +209,8 @@ install_custom_apks; #install facter.apk and razor-mk-agent.apk
 setup_mk_service; #move around executables used by mk service
 start_mk_service;
 setup_pxe_boot; #edit /etc/mkinitfs
-#generate_pxe_initramfs
+#generate_pxe_initramfs;
+#verify_pxe_initramfs;
 #tar_microkernel #take vmlinuz and new pxe-initramfs and put in a tarball
 
 #build_iso #TODO is this needed or use build-iso.sh?
