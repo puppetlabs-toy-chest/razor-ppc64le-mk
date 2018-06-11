@@ -3,13 +3,24 @@
 
 #setup razor microkernel and generate a PXE boot-able image from currently
    #running Alpine instance
-   #go to bottom for start of execution
+
+#go to bottom for start of execution
 
 BUILD_DIR=$(pwd)
-# where gems and apks will exist for use by mk service
 GEM_DIR=$BUILD_DIR/gems
 APK_DIR=$BUILD_DIR/apks
-PXE_DIR=$BUILD_DIR/pxe
+PXE_DIR=$BUILD_DIR/PXE
+
+check_kernel() {
+  echo ""
+  echo "Verifying kernel version..."
+  echo ""
+  supported_kernel="4.14.48-0-vanilla"
+  if [ $(uname -r) != $supported_kernel ];then
+    echo "Please update kernel to at least $supported_kernel"
+    exit 1
+  fi
+}
 
 download_packages() {
   echo ""
@@ -20,6 +31,7 @@ apk update
 
 # build dependices from wiki and razor
 apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso 'ruby<2.5.1' ruby-dev
+#gemfile specifis 2.4.4 so make sure we dont get new ruby
 
 # needed to build the razor-mk-agent.gem and convert gems to .apks
 gem install etc fpm facter rake bundler --no-document
@@ -59,7 +71,6 @@ create_apks_from_gems() {
 
   #sign the apks
  abuild-sign $APK_DIR/*.apk
-
 }
 
 install_custom_apks() {
@@ -87,7 +98,6 @@ setup_mk_service() {
     cp $BUILD_DIR/mk /etc/init.d/
     rc-update add mk default
   fi
-
 }
 
 start_mk_service() {
@@ -119,41 +129,33 @@ generate_pxe_initramfs() {
   #TODO im guessing packages are not included in this by default? will have to
     #extract and add.
   mkinitfs -o $PXE_DIR/pxe-initramfs
-
 }
 
 verify_pxe_initramfs() {
-  cd $PXE_DIR
-  gunzip -c $PXE_DIR/pxe-initramfs | cpio -idmv
+  echo ""
+  echo "Validating pxe-initramfs..."
+  echo ""
 
-  #check service
-  if [ ! -f $PXE_DIR/etc/init.d/mk ]; then
-    #TODO all the files in /usr/local/bin already included but no services
-    chmod +x $BUILD_DIR/mk
-    cp $BUILD_DIR/mk $PXE_DIR/etc/init.d/
-    rc-update add mk default
-  fi
+  mkdir -p $PXE_DIR/test #double check
+  cd $PXE_DIR/test
+  gunzip -c $PXE_DIR/pxe-initramfs | cpio -idmv #extract to ./PXE/test
 
-  #check facter
-  if [ ! -f $PXE_DIR/usr/bin/facter ]; then
-    #TODO copy apks to inintramfs and have service install them if not found
-    cp $(which facter) $PXE_DIR/usr/bin
-  fi
-  #TODO check razor-mk-agent
+  #make sure all files are available for mk service.
 
+  #cp apks for mk service start_pre()
+  mkdir -p ./etc/razor/apks
+  cp $APK_DIR/* ./etc/razor/apks/
+
+  #cp scripts for mk service start_pre()
+  mkdir -p ./usr/local/bin
+  chmod +x $BUILD_DIR/bin/mk*
+  cp  $BUILD_DIR/bin/* ./etc/razor
+
+  #zip it back up
+  find . | cpio -H newrc -o | gzip -9 > $PXE_DIR
 }
 
-check_kernel() {
-  echo ""
-  echo "Verifying kernel version..."
-  echo ""
-  supported_kernel="4.14.48-0-vanilla"
-  if [ $(uname -r) != $supported_kernel ];then
-    echo "Please update kernel to at least $supported_kernel"
-    exit 1
-  fi
-}
-
+#TODO never tested
 build_iso() {
   echo ""
   echo "Building iso..."
@@ -200,18 +202,45 @@ cleanup() {
   rm /etc/init.d/mk
 }
 
+####################################
+####################################
 #BEGIN EXECUTION
 
+#make sure new kernel is loaded and running
 check_kernel;
-download_packages; #setup repositories to install needed packages to build
-create_apks_from_gems; #turn facter.gem and razor-mk-agent.gem into apks to use by Alpine
-install_custom_apks; #install facter.apk and razor-mk-agent.apk
-setup_mk_service; #move around executables used by mk service
-start_mk_service;
-setup_pxe_boot; #edit /etc/mkinitfs
-#generate_pxe_initramfs;
-#verify_pxe_initramfs;
-#tar_microkernel #take vmlinuz and new pxe-initramfs and put in a tarball
 
-#build_iso #TODO is this needed or use build-iso.sh?
+#setup repositories to install needed packages to build
+download_packages;
+
+ #turn facter.gem and razor-mk-agent.gem into apks to use by Alpine
+create_apks_from_gems;
+
+#install facter.apk and razor-mk-agent.apk. locaed in ./apks
+  #hoping this is loaded into pxe-initramfs
+install_custom_apks;
+
+#move around executables used by mk service
+setup_mk_service;
+
+#specified in ./mk
+start_mk_service;
+
+#edit /etc/mkinitfs to includ NICs and enable network/dhcp
+setup_pxe_boot;
+
+#create a pxe-initrams in ./PXE
+generate_pxe_initramfs;
+
+#make sure all files are on pxe-initramfs. make a dir
+  #called /etc/razor where mk service can grab files
+  #everything _should_ be included in pxe-initrams but this func will extract it
+  #and add what we want so service can use it.
+verify_pxe_initramfs;
+
+#take vmlinuz and new pxe-initramfs and put in a tarball like x86
+#tar_microkernel
+
+#TODO is this needed or use build-iso.sh?
+#build_iso
+
 #cleanup #remove everything
