@@ -6,12 +6,16 @@ depend() {
     use dns logger
 }
 start_pre() {
+		#no harm in making sure packages are already installed.
+		apk add /etc/razor/apks/* --allow-untrusted
+
+		#dir and files specified in verify_pxe_initramfs() in setup-razor-env.sh
+		if [ ! -f /usr/local/bin/mk-register ]; then
+			chmod +x /etc/razor/mk*
+			cp /etc/razor/mk* /usr/local/bin
+		fi
+
     sleep 30
-  #  if [ ! -f /usr/bin/facter ]; then
-	#this should be part of the initrd so facter should always be installed
-	#apk add /etc/razor/facter --allow-untrusted
-	#apk add /etc/razor/razor-mk-agent --allow-untrusted
-  #  fi
 }
 start() {
     ebegin "Starting mk"
