@@ -59,6 +59,16 @@ To view the extracted pxe-initramfs, after running setup-razor-env.sh
 ls ./PXE/extracted
 ```
 
+## Example pxelinux file
+
+```
+default microkernel
+
+label microkernel
+   kernel vmlinuz
+   initrd pxerd
+   append ip=dhcp modules=loop,squashfs,sd-mod,usb-storage alpine_repo=http://<iso-server>/iso/apks modloop=http://<iso-server>/iso/boot/modloop-vanilla apkovl=http://<iso-server>/iso/alpine.apkovl.tar.gz ssh_key=http://<key-server>/pubkey
+```
 More info:
 
 https://wiki.alpinelinux.org/wiki/Custom_Kernel
