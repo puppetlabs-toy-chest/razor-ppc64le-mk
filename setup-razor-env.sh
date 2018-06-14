@@ -15,7 +15,7 @@ check_kernel() {
   echo ""
   echo "Verifying kernel version..."
   echo ""
-  supported_kernel="4.14.48-0-vanilla"
+  supported_kernel="4.14.49-0-vanilla"
   if [ $(uname -r) != $supported_kernel ];then
     echo "Please update kernel to at least $supported_kernel"
     exit 1
@@ -30,7 +30,7 @@ download_packages() {
 apk update
 
 # build dependices from wiki and razor
-apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso 'ruby<2.5.1' ruby-dev
+apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso ruby ruby-dev
 #gemfile specifis 2.4.4 so make sure we dont get new ruby
 
 # needed to build the razor-mk-agent.gem and convert gems to .apks
@@ -59,7 +59,7 @@ create_apks_from_gems() {
   cp $GEM_DIR/cache/*.gem $GEM_DIR/
 
   #need to comment out a line to get working apk
-  fpm_file=$(find /usr/lib/ruby/gems/2.4.0/gems/fpm* | grep apk.rb)
+  fpm_file=$(find /usr/lib/ruby/gems/2.5.0/gems/fpm* | grep apk.rb)
   #line 255 #full_record_path = add_paxstring(full_record_path)
   sudo cp -f $BUILD_DIR/apk.rb $fpm_file
 
@@ -67,7 +67,7 @@ create_apks_from_gems() {
   mkdir -p $APK_DIR/
   cd $APK_DIR #where we will build apks
   /usr/bin/fpm -n facter -a ppc64le -s gem -t apk $GEM_DIR/facter-2.5.1.gem
-  /use/bin/fpm -n razor-mk-agent -a ppc64le -s gem -t apk $GEM_DIR/razor-mk-agent-008.gem
+  /usr/bin/fpm -n razor-mk-agent -a ppc64le -s gem -t apk $GEM_DIR/razor-mk-agent-008.gem
 
   #sign the apks
  abuild-sign $APK_DIR/*.apk
