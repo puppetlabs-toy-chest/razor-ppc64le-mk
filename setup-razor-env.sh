@@ -66,8 +66,8 @@ create_apks_from_gems() {
   #build 2 apks from 2 gems
   mkdir -p $APK_DIR/
   cd $APK_DIR #where we will build apks
-  fpm -n facter -a ppc64le -s gem -t apk $GEM_DIR/facter-2.5.1.gem
-  fpm -n razor-mk-agent -a ppc64le -s gem -t apk $GEM_DIR/razor-mk-agent-008.gem
+  /usr/bin/fpm -n facter -a ppc64le -s gem -t apk $GEM_DIR/facter-2.5.1.gem
+  /use/bin/fpm -n razor-mk-agent -a ppc64le -s gem -t apk $GEM_DIR/razor-mk-agent-008.gem
 
   #sign the apks
  abuild-sign $APK_DIR/*.apk
