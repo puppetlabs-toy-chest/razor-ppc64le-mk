@@ -17,21 +17,13 @@ To reset the install and run it again (will delete everything built)
 ./cleanup.sh
 ```
 
-## Installing My Kernel
-```bash
-wget http://dl-cdn.alpinelinux.org/alpine/edge/main/ppc64le/linux-vanilla-4.14.48-r0.apk
-apk add ./linux-vanilla-4.14.48-r0.apk --allow-untrusted
-```
-
-Due to https://bugs.alpinelinux.org/issues/8966 you will have to run the following:
+## Installing Correct Kernel Version
+Update the repositories to v3.8 repo, and upgrade packages.
 
 ```bash
-mv /boot/vmlinuz-vanilla /boot/vmlinuz
-```
-
-Reboot into new kernel:
-
-```bash
+echo "http://dl-cdn.alpinelinux.org/alpine/v3.8/main/" >> /etc/apk/repositories 
+apk update
+apk upgrade --available --update-cache
 reboot
 ```
 
