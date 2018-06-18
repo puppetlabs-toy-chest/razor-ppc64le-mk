@@ -71,6 +71,8 @@ label microkernel
 ```
 More info:
 
+https://wiki.alpinelinux.org/wiki/Upgrading_Alpine#Upgrading_to_latest_release
+
 https://wiki.alpinelinux.org/wiki/Custom_Kernel
 
 https://wiki.alpinelinux.org/wiki/Ppc64le
