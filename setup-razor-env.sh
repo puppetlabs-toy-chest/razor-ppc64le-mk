@@ -152,8 +152,8 @@ verify_pxe_initramfs() {
   cp  $BUILD_DIR/bin/* ./etc/razor
 
   #replace init to use eth2
-  cp $BUILD_DIR/init ./
-  chmod +x ./init
+  #cp $BUILD_DIR/init ./
+  #chmod +x ./init
 
   #zip it back up
   find . | cpio -H newrc -o | gzip -9 > $PXE_DIR/pxe-initramfs
