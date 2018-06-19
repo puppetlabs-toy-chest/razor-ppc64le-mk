@@ -217,5 +217,8 @@ verify_pxe_initramfs;
 #take vmlinuz and new pxe-initramfs and put in a tarball just like x86
 tar_microkernel;
 
+#create an apkovl.tar.gz which contains:
+# ssh priv key, mk service, related razor files,
+#  and startup script in /etc/profile.d/ to start mk
 echo ""
 echo "done."
