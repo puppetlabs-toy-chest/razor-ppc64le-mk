@@ -165,7 +165,7 @@ tar_microkernel(){
   echo ""
   cd $BUILD_DIR
   mkdir -p $BUILD_DIR/microkernel-ppc64le
-  cp /boot/vmlinuz $BUILD_DIR/microkernel-ppc64le
+  cp $BUILD_DIR/vmlinuz-vanilla $BUILD_DIR/microkernel-ppc64le
   cp $PXE_DIR/pxe-initramfs $BUILD_DIR/microkernel-ppc64le
   mv $BUILD_DIR/microkernel-ppc64le/pxe-initramfs $BUILD_DIR/microkernel-ppc64le/pxerd
 
