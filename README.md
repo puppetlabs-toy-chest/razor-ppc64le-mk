@@ -59,7 +59,9 @@ default microkernel
 label microkernel
    kernel vmlinuz
    initrd pxerd
-   append ip=dhcp modules=loop,squashfs,sd-mod,usb-storage alpine_repo=http://<iso-server>/iso/apks modloop=http://<iso-server>/iso/boot/modloop-vanilla apkovl=http://<iso-server>/iso/alpine.apkovl.tar.gz ssh_key=http://<key-server>/pubkey
+   append powersave=off ip=client-ip:server-ip:gw-ip:netmask:hostname:device:-:8.8.8.8:8.8.4.4 alpine_repo=http://dl-cdn.alpinelinux.org/alpine/v3.8/main/ modloop=http://dl-master.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot-3.8.0_rc5/modloop-vanilla
+
+
 ```
 More info:
 
