@@ -59,7 +59,7 @@ default microkernel
 label microkernel
    kernel vmlinuz
    initrd pxerd
-   append powersave=off ip=client-ip:server-ip:gw-ip:netmask:hostname:device:-:8.8.8.8:8.8.4.4 alpine_repo=http://dl-cdn.alpinelinux.org/alpine/v3.8/main/ modloop=http://dl-master.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot-3.8.0_rc5/modloop-vanilla
+   append modules=loop,squashfs,sd-mod,usb-storage,ibmvscsi console=hvc0 powersave=off ip=client-ip:server-ip:gw-ip:netmask:hostname:device:-:8.8.8.8:8.8.4.4 alpine_repo=http://dl-cdn.alpinelinux.org/alpine/v3.8/main/ modloop=http://dl-master.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot-3.8.0_rc5/modloop-vanilla
 
 
 ```
