@@ -181,6 +181,7 @@ build_apkovl_tar(){
   mkdir -p apkovl/
 
   lbu include /etc/razor/
+  lbu include /etc/profile.d/
   cd ./apkovl/
   lbu package
 }
