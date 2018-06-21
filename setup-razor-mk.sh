@@ -19,7 +19,7 @@ setup_mk_service() {
 
   if [ ! -f /etc/init.d/mk ]; then
     cp $BUILD_DIR/mk /etc/init.d/
-    rc-update add mk default
+    rc-update add mk default#TODO already added so not needed here?
   fi
 }
 
