@@ -179,6 +179,8 @@ build_apkovl_tar(){
 
   cd $BUILD_DIR
   mkdir -p apkovl/
+  chmod +x $BUILD_DIR/setup-razor-mk.sh
+  cp $BUILD_DIR/setup-razor-mk.sh /etc/profile.d/
 
   lbu include /etc/razor/
   lbu include /etc/profile.d/
