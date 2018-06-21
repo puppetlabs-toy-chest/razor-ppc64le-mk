@@ -179,6 +179,7 @@ build_apkovl_tar(){
 
   mkdir -p /etc/razor/
   mkdir -p /etc/razor/bin
+  mkdir -p /etc/razor/apks
 
   cd $BUILD_DIR
   mkdir -p apkovl/
@@ -188,6 +189,7 @@ build_apkovl_tar(){
   cp $BUILD_DIR/setup-razor-mk.sh /etc/profile.d/
   cp $BUILD_DIR/mk /etc/razor #service file
   cp $BUILD_DIR/bin/* /etc/razor/bin
+  cp $BUILD_DIR/apks/* /etc/razor/apks
 
   lbu include /etc/razor/
   lbu include /etc/profile.d/
