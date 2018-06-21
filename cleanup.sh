@@ -7,6 +7,7 @@ BUILD_DIR=$(pwd)
 
 #Will not remove pxe bootable configs or apk.rb for fpm
 apk del ruby ruby-dev facter razor-mk-agent
+rm -rf $BUILD_DIR/apkovl
 rm -rf $BUILD_DIR/pkg
 rm -rf $BUILD_DIR/gems
 rm -rf $BUILD_DIR/apks
