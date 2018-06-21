@@ -172,6 +172,19 @@ tar_microkernel(){
   echo "Succuessfully created microkernel-ppc64le.tar ....."
 }
 
+build_apkovl_tar(){
+  echo ""
+  echo "Building apkovl.tar.gz..."
+  echo ""
+
+  cd $BUILD_DIR
+  mkdir -p apkovl/
+
+  lbu include /etc/razor/
+  cd ./apkovl/
+  lbu package
+}
+
 ####################################
 ####################################
 #BEGIN EXECUTION
@@ -204,11 +217,9 @@ generate_pxe_initramfs;
 #make sure all files are on pxe-initramfs. make a dir
   #called /etc/razor where mk service can grab files
   #everything _should_ be included in pxe-initrams but this func will extract it
+
   #and add what we want so service can use it.
 verify_pxe_initramfs;
-
-#TODO verify OpenRC init is using network interface that is up
-#https://github.com/alpinelinux/mkinitfs/pull/28
 
 #take vmlinuz and new pxe-initramfs and put in a tarball just like x86
 tar_microkernel;
@@ -216,5 +227,7 @@ tar_microkernel;
 #create an apkovl.tar.gz which contains:
 # ssh priv key, mk service, related razor files,
 #  and startup script in /etc/profile.d/ to start mk
+build_apkovl_tar;
+
 echo ""
 echo "done."
