@@ -14,8 +14,8 @@ setup_mk_service() {
 
   cd $BUILD_DIR
   mkdir -p /usr/local/bin
-  chmod +x $BUILD_DIR/mk*
-  cp  $BUILD_DIR/mk* /usr/local/bin
+  chmod +x $BUILD_DIR/bin/mk*
+  cp  $BUILD_DIR/bin/mk* /usr/local/bin
 
   if [ ! -f /etc/init.d/mk ]; then
     cp $BUILD_DIR/mk /etc/init.d/

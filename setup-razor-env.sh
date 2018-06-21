@@ -177,10 +177,17 @@ build_apkovl_tar(){
   echo "Building apkovl.tar.gz..."
   echo ""
 
+  mkdir -p /etc/razor/
+  mkdir -p /etc/razor/bin
+
   cd $BUILD_DIR
   mkdir -p apkovl/
   chmod +x $BUILD_DIR/setup-razor-mk.sh
+ 
+ #TODO this script assumes /etc/razor contains a bin/ dir and mk service file 
   cp $BUILD_DIR/setup-razor-mk.sh /etc/profile.d/
+  cp $BUILD_DIR/mk /etc/razor #service file
+  cp $BUILD_DIR/bin/* /etc/razor/bin
 
   lbu include /etc/razor/
   lbu include /etc/profile.d/
