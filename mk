@@ -9,7 +9,7 @@ start_pre() {
 		#make sure packages are already installed.
 		if [ -f /etc/razor/apks ];then
 			#make sure we have dir of apks. otherwise, likely on build machine
-			apk add /etc/razor/apks/* --allow-untrusted
+			apk add /etc/razor/apks/* --allow-untrusted --force-non-repository
 		fi
 
 
