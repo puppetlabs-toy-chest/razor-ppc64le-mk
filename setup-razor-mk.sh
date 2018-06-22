@@ -21,10 +21,14 @@ setup_mk_service() {
     cp $BUILD_DIR/mk /etc/init.d/
     rc-update add mk default #TODO already added so not needed here?
   fi
+
+  echo "Installing apks..."
+  apk add /etc/razor/apks/* --allow-untrusted --force-non-repository
 }
 
 setup_mk_service;
 
+echo ""
 echo "Starting mk service..."
 echo ""
 /etc/init.d/mk start
