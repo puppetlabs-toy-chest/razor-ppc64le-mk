@@ -15,7 +15,7 @@ check_kernel() {
   echo ""
   echo "Verifying kernel version..."
   echo ""
-  supported_kernel="4.14.50-0-vanilla"
+  supported_kernel="4.14.51-0-vanilla"
   if [ $(uname -r) != $supported_kernel ];then
     echo "Please update kernel to at least $supported_kernel"
     exit 1
