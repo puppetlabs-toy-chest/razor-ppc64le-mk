@@ -30,11 +30,14 @@ download_packages() {
 apk update
 
 # build dependices from wiki and razor
-apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso ruby ruby-dev
-#gemfile specifis 2.4.4 so make sure we dont get new ruby
+apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso ruby ruby-dev mkinitfs
+#NOTE: verify gemfile ruby version!
+
+abuild-keygen -a
 
 # needed to build the razor-mk-agent.gem and convert gems to .apks
 gem install etc fpm facter rake bundler --no-document
+#TODO why install facter?
 }
 
 create_apks_from_gems() {
@@ -77,8 +80,9 @@ install_custom_apks() {
   echo ""
   echo "Installing custom apks..."
   echo ""
-  apk add $APK_DIR/facter*.apk --allow-untrusted
-	apk add $APK_DIR/razor-mk-agent*.apk --allow-untrusted
+  #TODO why do this since its not going to be included anyways
+  apk add $APK_DIR/facter*.apk --allow-untrusted --force-non-repository
+  apk add $APK_DIR/razor-mk-agent*.apk --allow-untrusted --force-non-repository
 }
 
 setup_mk_service() {
@@ -212,6 +216,7 @@ create_apks_from_gems;
 
 #install facter.apk and razor-mk-agent.apk. locaed in ./apks
   #hoping this is loaded into pxe-initramfs
+#TODO its not!
 install_custom_apks;
 
 #move around executables used by mk service
@@ -239,6 +244,10 @@ tar_microkernel;
 #create an apkovl.tar.gz which contains:
 # ssh priv key, mk service, related razor files,
 #  and startup script in /etc/profile.d/ to start mk
+#TODO: add facter binary
+#TODO: ensure /etc/apk/world doesnt have facter/razor-mk installed
+#TODO: add nameserver 8.8.8.8 to /etc/resolv.conf
+#TODO: make sure /etc/network/interfaces has dhcp for some interface
 build_apkovl_tar;
 
 echo ""
