@@ -89,7 +89,6 @@ setup_mk_service() {
   echo ""
   echo "Setting up mk service..."
   echo ""
-  #TODO Is this all the files we need for mk? what about ./lib/
   # move shell scripts used by mk OpenRC service
   cd $BUILD_DIR
   mkdir -p /usr/local/bin
@@ -130,7 +129,7 @@ generate_pxe_initramfs() {
   echo ""
 
   #TODO dont need to generate this every time. if it exsits, extract it
-  #TODO im guessing packages are not included in this by default? will have to
+  #packages are not included in this by default. will have to
     #extract and add.
   mkinitfs -o $PXE_DIR/pxe-initramfs
 }
@@ -195,8 +194,25 @@ build_apkovl_tar(){
   cp $BUILD_DIR/bin/* /etc/razor/bin
   cp $BUILD_DIR/apks/* /etc/razor/apks
 
+  #contains apks and Ruby files
   lbu include /etc/razor/
+
+  #contains script to start everything
   lbu include /etc/profile.d/
+  
+  #setup DNS 
+  echo > /etc/resolv.conf
+  echo "nameserver 8.8.8.8" > /etc/resolv.conf
+  echo "nameserver 8.8.4.4" > /etc/resolv.conf
+  lbu include /etc/resolv.conf
+
+  #double check nothing is installed
+  if grep "facter" /etc/apk/world; then
+	  echo "Removing facter and razor-mk-agent..."
+	  apk del facter
+	  apk del razor-mk-agent
+  fi
+
   cd ./apkovl/
   lbu package
 }
