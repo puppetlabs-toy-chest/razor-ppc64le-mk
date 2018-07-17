@@ -36,7 +36,7 @@ apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso rub
 abuild-keygen -a
 
 # needed to build the razor-mk-agent.gem and convert gems to .apks
-gem install etc fpm facter rake bundler --no-document
+gem install etc fpm rake bundler --no-document
 #TODO why install facter?
 }
 
@@ -217,7 +217,7 @@ create_apks_from_gems;
 #install facter.apk and razor-mk-agent.apk. locaed in ./apks
   #hoping this is loaded into pxe-initramfs
 #TODO its not!
-install_custom_apks;
+#install_custom_apks;
 
 #move around executables used by mk service
 setup_mk_service;
