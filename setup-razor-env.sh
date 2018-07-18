@@ -222,7 +222,7 @@ build_apkovl_tar(){
 #BEGIN EXECUTION
 
 #make sure new kernel is loaded and running
-check_kernel;
+#check_kernel;
 
 #setup repositories to install needed packages to build
 download_packages;
@@ -261,8 +261,6 @@ tar_microkernel;
 # ssh priv key, mk service, related razor files,
 #  and startup script in /etc/profile.d/ to start mk
 #TODO: add facter binary
-#TODO: ensure /etc/apk/world doesnt have facter/razor-mk installed
-#TODO: add nameserver 8.8.8.8 to /etc/resolv.conf
 #TODO: make sure /etc/network/interfaces has dhcp for some interface
 build_apkovl_tar;
 
