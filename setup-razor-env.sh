@@ -231,7 +231,7 @@ setup_pxe_boot;
   #everything _should_ be included in pxe-initrams but this func will extract it
 
   #and add what we want so service can use it.
-verify_pxe_initramfs;
+#verify_pxe_initramfs;
 
 #take vmlinuz and new pxe-initramfs and put in a tarball just like x86
 tar_microkernel;
