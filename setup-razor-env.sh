@@ -65,15 +65,6 @@ create_apks_from_gems() {
  abuild-sign $APK_DIR/*.apk
 }
 
-install_custom_apks() {
-  echo ""
-  echo "Installing custom apks..."
-  echo ""
-  #TODO why do this since its not going to be included anyways
-  apk add $APK_DIR/facter*.apk --allow-untrusted --force-non-repository
-  apk add $APK_DIR/razor-mk-agent*.apk --allow-untrusted --force-non-repository
-}
-
 setup_mk_service() {
   echo ""
   echo "Setting up mk service..."
@@ -222,11 +213,6 @@ download_packages;
 
 #turn facter.gem and razor-mk-agent.gem into apks to use by Alpine
 create_apks_from_gems;
-
-#install facter.apk and razor-mk-agent.apk. locaed in ./apks
-  #hoping this is loaded into pxe-initramfs
-#TODO its not!
-#install_custom_apks;
 
 #move around executables used by mk service
 setup_mk_service;
