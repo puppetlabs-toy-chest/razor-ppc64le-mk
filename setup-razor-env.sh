@@ -11,17 +11,6 @@ GEM_DIR=$BUILD_DIR/gems
 APK_DIR=$BUILD_DIR/apks
 PXE_DIR=$BUILD_DIR/PXE
 
-check_kernel() {
-  echo ""
-  echo "Verifying kernel version..."
-  echo ""
-  supported_kernel="4.14.51-0-vanilla"
-  if [ $(uname -r) != $supported_kernel ];then
-    echo "Please update kernel to at least $supported_kernel"
-    exit 1
-  fi
-}
-
 download_packages() {
   echo ""
   echo "Downloading packages..."
@@ -227,9 +216,6 @@ build_apkovl_tar(){
 ####################################
 ####################################
 #BEGIN EXECUTION
-
-#make sure new kernel is loaded and running
-#check_kernel;
 
 #setup repositories to install needed packages to build
 download_packages;
