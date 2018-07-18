@@ -180,6 +180,7 @@ tar_microkernel;
 #  and startup script in /etc/profile.d/ to start mk
 #TODO: add facter binary as a backup?
 #TODO: make sure /etc/network/interfaces has dhcp for some interface
+apk del alpine-sdk build-base fakeroot xorriso ruby-dev mkinitfs git chrony
 build_apkovl_tar;
 
 echo ""
