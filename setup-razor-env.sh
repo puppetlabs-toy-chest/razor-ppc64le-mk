@@ -26,7 +26,7 @@ abuild-keygen -a
 
 # needed to build the razor-mk-agent.gem and convert gems to .apks
 gem install etc fpm rake bundler --no-document
-#TODO why install facter?
+# facter is a dependecy but the gem can be installed
 }
 
 create_apks_from_gems() {
@@ -88,54 +88,6 @@ start_mk_service() {
   echo "Starting mk service..."
   echo ""
   /etc/init.d/mk start
-}
-
-setup_pxe_boot() {
-  echo ""
-  echo "Setting up pxe boot..."
-  echo ""
-
-  echo "/usr/share/udhcpc/default.script" > /etc/mkinitfs/features.d/dhcp.files
-   echo "kernel/net/packet/af_packet.ko" > /etc/mkinitfs/features.d/dhcp.modules
-   echo "kernel/fs/nfs/*" > /etc/mkinitfs/features.d/nfs.modules
-   echo 'features="ata base bootchart cdrom cramfs ext2 ext3 ext4 xfs floppy keymap kms raid scsi usb virtio squashfs network dhcp nfs"' > /etc/mkinitfs/mkinitfs.conf
-
-   mkdir -p $PXE_DIR
-}
-
-generate_pxe_initramfs() {
-  echo ""
-  echo "Generating pxe-initramfs..."
-  echo ""
-
-  #TODO dont need to generate this every time. if it exsits, extract it
-  #packages are not included in this by default. will have to
-    #extract and add.
-  mkinitfs -o $PXE_DIR/pxe-initramfs
-}
-
-verify_pxe_initramfs() {
-  echo ""
-  echo "Validating pxe-initramfs..."
-  echo ""
-
-  mkdir -p $PXE_DIR/extracted
-  cd $PXE_DIR/extracted
-  gunzip -c $PXE_DIR/pxe-initramfs | cpio -idmv #extract to ./PXE/extracted
-
-  #make sure all files are available for mk service.
-
-  #cp apks for mk service start_pre()
-  mkdir -p ./etc/razor/apks
-  cp $APK_DIR/* ./etc/razor/apks/
-
-  #cp scripts for mk service start_pre()
-  mkdir -p ./usr/local/bin
-  chmod +x $BUILD_DIR/bin/mk*
-  cp  $BUILD_DIR/bin/* ./etc/razor
-
-  #zip it back up
-  find . | cpio -H newrc -o | gzip -9 > $PXE_DIR/pxe-initramfs
 }
 
 tar_microkernel(){
@@ -220,26 +172,13 @@ setup_mk_service;
 #specified in ./mk
 start_mk_service;
 
-#edit /etc/mkinitfs to includ NICs and enable network/dhcp
-setup_pxe_boot;
-
-#create a pxe-initrams in ./PXE
-#generate_pxe_initramfs;
-
-#make sure all files are on pxe-initramfs. make a dir
-  #called /etc/razor where mk service can grab files
-  #everything _should_ be included in pxe-initrams but this func will extract it
-
-  #and add what we want so service can use it.
-#verify_pxe_initramfs;
-
 #take vmlinuz and new pxe-initramfs and put in a tarball just like x86
 tar_microkernel;
 
 #create an apkovl.tar.gz which contains:
 # ssh priv key, mk service, related razor files,
 #  and startup script in /etc/profile.d/ to start mk
-#TODO: add facter binary
+#TODO: add facter binary as a backup?
 #TODO: make sure /etc/network/interfaces has dhcp for some interface
 build_apkovl_tar;
 
