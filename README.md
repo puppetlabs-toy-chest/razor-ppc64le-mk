@@ -29,7 +29,7 @@ default microkernel
 label microkernel
    kernel http://dl-master.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot-3.8.0/vmlinuz-vanilla
    initrd http://dl-master.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot-3.8.0/initramfs-vanilla
-   append apkovl=http://your-apkovl-location ip=client-ip:server-ip:gw-ip:netmask:hostname:device:-:8.8.8.8:8.8.4.4 modloop=http://dl-cdn.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot/modloop-vanilla modules=loop,squashfs,sd-mod,usb-storage,ibmvscsi console=hvc0 powersave=off alpine_repo=http://dl-cdn.alpinelinux.org/alpine/v3.8/main/
+   append apkovl=http://your-apkovl-location ip=client-ip:server-ip:gw-ip:netmask:hostname:device:-:8.8.8.8:8.8.4.4 modloop=http://dl-cdn.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot/modloop-vanilla modules=loop,squashfs,sd-mod,usb-storage,ibmvscsi powersave=off alpine_repo=http://dl-cdn.alpinelinux.org/alpine/v3.8/main/
 ```
 
 # Developer Notes
