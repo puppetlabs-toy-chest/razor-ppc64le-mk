@@ -19,7 +19,7 @@ download_packages() {
 apk update
 
 # build dependices from wiki and razor
-apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso ruby ruby-dev mkinitfs
+apk add alpine-sdk build-base apk-tools alpine-conf busybox fakeroot xorriso ruby ruby-json ruby-dev mkinitfs
 #NOTE: verify gemfile ruby version!
 
 abuild-keygen -a
