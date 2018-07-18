@@ -4,9 +4,9 @@ Build Alpine Linux 3.7.0 ppc64le tarball to use as the Razor microkernel.
 x86 info: https://github.com/puppetlabs/razor-el-mk/blob/master/README.md
 
 # How to Run
-Setup an Alpine ppc64le machine with a 4.14.50-0-vanilla. Either download newer kernel from an Edge repo or follow instructions below to build kernel from source.
+Setup an Alpine ppc64le machine. We recommend Alpine 3.8 but its not necessary. 
 
-Run scripts:
+Clone this repo an run the setup script:
 
 ```bash
 ./setup-razor-env.sh
@@ -17,46 +17,24 @@ To reset the install and run it again (will delete everything built)
 ./cleanup.sh
 ```
 
-## Installing Correct Kernel Version
-Update the repositories to v3.8 repo, and upgrade packages.
-
-```bash
-echo "http://dl-cdn.alpinelinux.org/alpine/v3.8/main/" >> /etc/apk/repositories 
-apk update
-apk upgrade --available --update-cache
-reboot
-```
-
-## Installing Kernel from Source
-Create a user account abuild. More info: https://wiki.alpinelinux.org/wiki/How_to_make_a_custom_ISO_image_with_mkimage
-
-Follow instructions here:
-https://wiki.alpinelinux.org/wiki/Custom_Kernel
-
-Verify kernel version in ```check_kernel()``` in ```setup-razor-env.sh```.
-
 # Developer Notes
 Some helpful tidbits of why something is implemented a certain way. Helpful for other devs.
 
-## Installing Razor files
-We have 2 gems which need to be included for razor, facter and razor-mk-agent. In summary, we convert these gems into apks - Alpine's package format. Facter is locally installed as a gem. razor-mk-agent is built from the code in this repo. Once both gems exist, we will convert the gems to apks using fpm. Look at ```create_apks_from_gems()```
+## Installing Razor files for microkernel
+We have 2 gems which need to be included for Razor: facter and razor-mk-agent. In summary, we convert these gems into apks - Alpine's package format. Facter is locally installed as a gem. razor-mk-agent is built from the code in this repo. Once both gems exist, we will convert the gems to apks using fpm. Look at ```create_apks_from_gems()``` 
 
-## initramfs and PXE
-This script will setup the razor environment on the currently running Alpine instance a.k.a. the build machine. Once everything is in place, we generate a PXE bootable initramfs using mkinitfs. In order to make sure this outputs the correct initramfs with all the razor files, ```verify_pxe_initramfs()``` will extract initramfs and shove in all the apks (packages) and scripts used by razor into the pxe-initramfs, and then 'zip' it back up. The ```mk``` service will utilize /etc/razor directory.
+**These custom built apks should not be installed on the build machine.** This script will double check these are not installed and remove Facter or razor-mk-agent if they are installed. The reason these cannot be installed is because the apkovl will not contain these installed apks files, such as /usr/bin executables, however the /etc/apk/world file says those package are installed and thers a problem.
+
+Please note we use a modified version of fpm. Our 'local fork' replaces source code.
+
 
 ## apkovl and the root filesystem
 In this version, we are using an apkovl as a kernel command. The apkovl.tar.gz is just a normal tarball. The ```setup-razor-env.sh``` will create an apkovl automatically which will contain the following:
 * ```/etc/profile.d/setup-razor-mk.sh```: this will install the apks and start the ```mk``` service. Basically setup the microkernel environment once the kernel is booted.
 * ```/etc/razor/```: contains the ```mk```service, facter and razor-mk-agent apks, and other Ruby files needed for Razor.
 
-After running ```setup-razor-env.sh```, look in the apkovl/ directory and place the apkovl.tar.gz in a location which can be accessed by the ppc64le we are going to provision with Razor.
+After running ```setup-razor-env.sh```, look in the *apkovl/* directory and place the apkovl.tar.gz in a location which can be accessed by the ppc64le we are going to provision with Razor.
 
-## Viewing initramfs
-
-To view the extracted pxe-initramfs, after running setup-razor-env.sh
-```bash
-ls ./PXE/extracted
-```
 
 ## Example pxelinux file (kernel commands)
 
