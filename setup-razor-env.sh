@@ -160,13 +160,20 @@ verify_pxe_initramfs() {
 
 tar_microkernel(){
   echo ""
-  echo "Tarring up vmlinuz and pxe-initramfs..."
+  echo "Downloading & tarring up vmlinuz and initramfs..."
   echo ""
   cd $BUILD_DIR
   mkdir -p $BUILD_DIR/microkernel-ppc64le
-  cp /boot/vmlinuz-vanilla $BUILD_DIR/microkernel-ppc64le
-  cp $PXE_DIR/pxe-initramfs $BUILD_DIR/microkernel-ppc64le
-  mv $BUILD_DIR/microkernel-ppc64le/pxe-initramfs $BUILD_DIR/microkernel-ppc64le/pxerd
+  cd $BUILD_DIR/microkernel-ppc64le
+  
+  #get official 3.8 vmlinuz file
+  wget http://dl-cdn.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot/vmlinuz-vanilla
+  
+  #get official 3.8 initramfs-vanilla
+  wget http://dl-cdn.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot/initramfs-vanilla
+
+  #TODO include the modules file used in extra boot commands?
+  #wget http://dl-cdn.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot/modloop-vanilla
 
   cd $BUILD_DIR #tar: Removing leading `/' from member names.
   #a security feature of tar to not use absolute paths.
