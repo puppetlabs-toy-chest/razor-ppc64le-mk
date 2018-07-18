@@ -17,6 +17,23 @@ To reset the install and run it again (will delete everything built)
 ./cleanup.sh
 ```
 
+# Example pxelinux file (kernel commands)
+
+Please edit the append lines with your settings. The below file is an example.
+
+Ensure the apkovl is accessible. 
+
+```
+default microkernel
+
+label microkernel
+   kernel http://dl-master.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot-3.8.0/vmlinuz-vanilla
+   initrd http://dl-master.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot-3.8.0/initramfs-vanilla
+   append apkovl=http://your-apkovl-location modloop=http://dl-cdn.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot/modloop-vanilla 
+      ip=client-ip:server-ip:gw-ip:netmask:hostname:device:-:8.8.8.8:8.8.4.4 
+      modules=loop,squashfs,sd-mod,usb-storage,ibmvscsi console=hvc0 powersave=off alpine_repo=http://dl-cdn.alpinelinux.org/alpine/v3.8/main/
+```
+
 # Developer Notes
 Some helpful tidbits of why something is implemented a certain way. Helpful for other devs.
 
@@ -36,23 +53,7 @@ In this version, we are using an apkovl as a kernel command. The apkovl.tar.gz i
 After running ```setup-razor-env.sh```, look in the *apkovl/* directory and place the apkovl.tar.gz in a location which can be accessed by the ppc64le we are going to provision with Razor.
 
 
-## Example pxelinux file (kernel commands)
-
-Please edit the append lines with your settings. The below file is an example.
-
-Ensure the apkovl is accessible. 
-
-```
-default microkernel
-
-label microkernel
-   kernel http://dl-master.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot-3.8.0/vmlinuz-vanilla
-   initrd http://dl-master.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot-3.8.0/initramfs-vanilla
-   append apkovl=http://your-apkovl-location modloop=http://dl-cdn.alpinelinux.org/alpine/v3.8/releases/ppc64le/netboot/modloop-vanilla 
-      ip=client-ip:server-ip:gw-ip:netmask:hostname:device:-:8.8.8.8:8.8.4.4 
-      modules=loop,squashfs,sd-mod,usb-storage,ibmvscsi console=hvc0 powersave=off alpine_repo=http://dl-cdn.alpinelinux.org/alpine/v3.8/main/
-```
-
+# Links
 More info:
 
 https://wiki.alpinelinux.org/wiki/Upgrading_Alpine#Upgrading_to_latest_release
