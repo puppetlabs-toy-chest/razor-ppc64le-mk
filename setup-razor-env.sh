@@ -252,7 +252,7 @@ start_mk_service;
 setup_pxe_boot;
 
 #create a pxe-initrams in ./PXE
-generate_pxe_initramfs;
+#generate_pxe_initramfs;
 
 #make sure all files are on pxe-initramfs. make a dir
   #called /etc/razor where mk service can grab files
